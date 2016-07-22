@@ -4,6 +4,8 @@
 #include <windowsx.h>
 #include <stdheaders.h>
 
+#include "busycircle.h"
+
 #define SCREEN_WIDTH 512
 #define SCREEN_HEIGHT 512
 #define DOTS 8
@@ -90,7 +92,7 @@ int APIENTRY WinMain(HINSTANCE inst,HINSTANCE previnst,LPSTR lpCmdLine,int nCmdS
     SDL_Texture *texture;
     SDL_Rect renderRect;
     SDL_Color textColor = {255,255,255,255};
-
+    int *slopetable = generateSpeedtable(256, 16, 4);
     bool done = false;
     int i;
 
