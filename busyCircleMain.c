@@ -1,16 +1,20 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include <windows.h>
-#include <windowsx.h>
-#include <stdheaders.h>
 
 #include "busycircle.h"
 
 #define SCREEN_WIDTH 512
 #define SCREEN_HEIGHT 512
 #define DOTS 8
-#define DISTANCE 16
+#define DISTANCE 12
 #define SLOPEDIST 4
+
+SDL_Window *window;
+SDL_Renderer *renderer;
+TTF_Font *font;
+SDL_Surface *surf;
+SDL_Texture *texture;
+int *slopetable;
 
 int sintable[] = {
     #include "sintable.h"
@@ -22,79 +26,38 @@ int sinpos[DOTS] = {0*DISTANCE,1*DISTANCE,2*DISTANCE,3*DISTANCE,
                     4*DISTANCE,5*DISTANCE,6*DISTANCE,7*DISTANCE};
 int slopepos[DOTS] = {0*SLOPEDIST, 1*SLOPEDIST, 2*SLOPEDIST, 3*SLOPEDIST,
                         4*SLOPEDIST, 5*SLOPEDIST, 6*SLOPEDIST, 7*SLOPEDIST};
-int slopetable[] = {
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,2,1,2,1,2,1,2,
-    2,2,2,2,2,2,2,2,
-    2,3,2,3,2,3,2,3,
-    3,3,3,3,3,3,3,3,
-    3,4,3,4,3,4,3,4,
-    4,4,4,4,4,4,4,4,
-    4,4,4,4,4,4,4,4,
-    3,4,3,4,3,4,3,4,
-    3,3,3,3,3,3,3,3,
-    3,2,3,2,3,2,3,2,
-    2,2,2,2,2,2,2,2,
-    2,1,2,1,2,1,2,1,
-
-    //1,1,1,1,1,1,1,1,
-    //1,1,1,1,1,1,1,1,
-
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-      1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    /*2,3,4,6,8,10,13,16,
-    16,13,10,8,6,4,3,2,
-    */
-    /*2,1,2,3,2,3,4,3,
-    4,5,4,5,6,5,6,7,
-    7,6,5,6,5,4,5,4,
-    3,4,3,2,3,2,1,2,
-    */
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1,
-    1,1,1,1,1,1,1,1
-};
 
 TTF_Font *initFont(void){
     TTF_Font *font = TTF_OpenFont("C:\\Windows\\Fonts\\arial.ttf"/*"Millennia.otf"*/, 96);
     return font;
 }
 
+void freeResources(void){
+    TTF_CloseFont(font);
+
+    if (window){
+        SDL_DestroyWindow(window);
+    }
+    if (renderer){
+        SDL_DestroyRenderer(renderer);
+    }
+    if (texture){
+        SDL_DestroyTexture(texture);
+    }
+    destroySpeedtable(slopetable);
+
+    SDL_Quit();
+}
+
 int APIENTRY WinMain(HINSTANCE inst,HINSTANCE previnst,LPSTR lpCmdLine,int nCmdShow) {
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-    TTF_Font *font;
-    SDL_Surface *surf;
-    SDL_Texture *texture;
+
     SDL_Rect renderRect;
     SDL_Color textColor = {255,255,255,255};
-    int *slopetable = generateSpeedtable(256, 16, 4);
+
     bool done = false;
     int i;
+    atexit(freeResources);
+    slopetable = generateSpeedtable(256, 16, 4);
 
     if( SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0 ){
         fprintf(stderr, "SDL_Init() Error: %s\n", SDL_GetError());
@@ -103,13 +66,11 @@ int APIENTRY WinMain(HINSTANCE inst,HINSTANCE previnst,LPSTR lpCmdLine,int nCmdS
 
     if( -1 == TTF_Init() ) {
         fprintf(stderr, "TTF_Init() Error: %s\n", TTF_GetError());
-        SDL_Quit();
         return 3;
     }
     font = initFont();
     if(!font){
         fprintf(stderr, "Font loading Error: %s\n", TTF_GetError());
-        SDL_Quit();
         return 2;
     }
     window = SDL_CreateWindow("Busy Circle!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -117,7 +78,6 @@ int APIENTRY WinMain(HINSTANCE inst,HINSTANCE previnst,LPSTR lpCmdLine,int nCmdS
     if(!window){
         fprintf(stderr, "SDL_CreateWindow() Error: %s\n", SDL_GetError());
         //TTF_Quit();
-        SDL_Quit();
         return 5;
     }
 
@@ -126,13 +86,13 @@ int APIENTRY WinMain(HINSTANCE inst,HINSTANCE previnst,LPSTR lpCmdLine,int nCmdS
         fprintf(stderr, "SDL_CreateRenderer() Error: %s\n", SDL_GetError());
         SDL_DestroyWindow(window);
         //TTF_Quit();
-        SDL_Quit();
         return 6;
     }
 
     SDL_SetRenderDrawColor(renderer, 0,0,0,0);
     surf = TTF_RenderUNICODE_Solid(font, L"\x25cf", textColor);
     texture = SDL_CreateTextureFromSurface(renderer, surf);
+    SDL_FreeSurface(surf);
 
     SDL_QueryTexture(texture, 0, 0, &(renderRect.w), &(renderRect.h));
 
