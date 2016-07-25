@@ -1,13 +1,7 @@
-#include <SDL.h>
-#include <SDL_ttf.h>
 
 #include "busycircle.h"
 
-#define SCREEN_WIDTH 512
-#define SCREEN_HEIGHT 512
-#define DOTS 8
-#define DISTANCE 12
-#define SLOPEDIST 4
+
 
 SDL_Window *window;
 SDL_Renderer *renderer;
@@ -47,6 +41,10 @@ void freeResources(void){
     destroySpeedtable(slopetable);
 
     SDL_Quit();
+    if (getError()){
+        fprintf(stderr, "Press enter to go on.");
+        getchar();
+    }
 }
 
 int APIENTRY WinMain(HINSTANCE inst,HINSTANCE previnst,LPSTR lpCmdLine,int nCmdShow) {
@@ -59,10 +57,7 @@ int APIENTRY WinMain(HINSTANCE inst,HINSTANCE previnst,LPSTR lpCmdLine,int nCmdS
     atexit(freeResources);
     slopetable = generateSpeedtable(256, 16, 4);
 
-    if( SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0 ){
-        fprintf(stderr, "SDL_Init() Error: %s\n", SDL_GetError());
-        return 1;
-    }
+    performSDLInit();
 
     if( -1 == TTF_Init() ) {
         fprintf(stderr, "TTF_Init() Error: %s\n", TTF_GetError());
@@ -73,7 +68,7 @@ int APIENTRY WinMain(HINSTANCE inst,HINSTANCE previnst,LPSTR lpCmdLine,int nCmdS
         fprintf(stderr, "Font loading Error: %s\n", TTF_GetError());
         return 2;
     }
-    window = SDL_CreateWindow("Busy Circle!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    window = createSDLWin("Busy circle!");
 
     if(!window){
         fprintf(stderr, "SDL_CreateWindow() Error: %s\n", SDL_GetError());
