@@ -55,6 +55,9 @@
 		<Unit filename="SDL_functions.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="TTF_functions.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="busyCircleMain.c">
 			<Option compilerVar="CC" />
 			<Option target="Debug" />
@@ -64,7 +67,10 @@
 		<Unit filename="generateSpeedtable.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="printSDLError.c">
+		<Unit filename="plotDiscs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="printSDLError2.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="sintable.h" />
