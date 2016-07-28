@@ -26,6 +26,11 @@ bool SDL_checkQuitEvent(void);
 SDL_Color SDL_translateColor(uint32_t int_color);
 SDL_Texture *SDL_renderDisc(SDL_Renderer *renderer, TTF_Font *font, uint32_t color);
 
+void initResources(void);
+void freeResources(void);
+SDL_Renderer *getRenderer(void);
+SDL_Texture *getTexture(void);
+
 void performTTFInit(void);
 TTF_Font *openFont(void);
 void closeFont(TTF_Font *fnt);

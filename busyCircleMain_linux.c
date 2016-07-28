@@ -3,10 +3,11 @@
 
 
 
-int APIENTRY WinMain(HINSTANCE inst,HINSTANCE previnst,LPSTR lpCmdLine,int nCmdShow) {
+int main(int argc, char *argv[])
+ {
     SDL_Rect renderRect;
     SDL_Renderer *renderer;
-    SDL_Texture *renderer;
+    SDL_Texture *texture;
 
     initResources();
     renderer = getRenderer();
@@ -24,3 +25,4 @@ int APIENTRY WinMain(HINSTANCE inst,HINSTANCE previnst,LPSTR lpCmdLine,int nCmdS
 
     return 0;
 }
+

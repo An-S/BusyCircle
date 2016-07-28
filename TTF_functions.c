@@ -8,7 +8,7 @@
  *
  */
 TTF_Font *openFont(void){
-    TTF_Font *font = TTF_OpenFont("C:\\Windows\\Fonts\\arial.ttf"/*"Millennia.otf"*/, 96);
+    TTF_Font *font = TTF_OpenFont("arial.ttf"/*"Millennia.otf"*/, 96);
     if (font){
         return font;
     }
