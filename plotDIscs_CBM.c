@@ -22,7 +22,7 @@ void terminateDiscPlotter(void){
     if (slopetable) destroySpeedtable(slopetable);
 }
 
-void plotDiscs(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect renderRect){
+void plotDiscs(Renderer_t *renderer, Texture_t *texture, Target_t renderRect){
     size_t i;
     for (i = 0; i<DOTS; ++i){
         renderRect.x = (SCREEN_WIDTH/2)+sintable[sinpos[i]]-renderRect.w/2;
@@ -33,4 +33,5 @@ void plotDiscs(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect renderRect
         SDL_RenderCopy(renderer, texture, 0, &renderRect);
     }
 }
+
 

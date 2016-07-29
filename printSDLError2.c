@@ -1,5 +1,6 @@
 
 #include "busycircle.h"
+#include "busycircle_SDL.h"
 
 static int _exitcode;
 

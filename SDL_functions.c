@@ -1,4 +1,5 @@
 #include "busycircle.h"
+#include "busycircle_SDL.h"
 
 /** \brief wraps sdl init function and exits on error
  *

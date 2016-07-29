@@ -1,15 +1,11 @@
-
-#include "busycircle.h"
 #include "busycircle_SDL.h"
+#include "busycircle.h"
 
-
-int main(int argc, char *argv[])
- {
+int mainProg(void){
     SDL_Rect renderRect;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
 
-    //init resources registers exit handler
     initResources();
     renderer = getRenderer();
     texture = getTexture();
