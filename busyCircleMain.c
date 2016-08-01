@@ -1,6 +1,5 @@
 
-#include "busycircle.h"
-#include "busycircle_SDL.h"
+#include "busycircleInterface.h"
 
 
 int main(int argc, char *argv[]) {

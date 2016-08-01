@@ -1,5 +1,5 @@
 #include "busycircle.h"
-#include "busycircle_SDL.h"
+#include "busycircleInterface.h"
 
 int *slopetable;
 
@@ -15,14 +15,14 @@ int slopepos[DOTS] = {0*SLOPEDIST, 1*SLOPEDIST, 2*SLOPEDIST, 3*SLOPEDIST,
                         4*SLOPEDIST, 5*SLOPEDIST, 6*SLOPEDIST, 7*SLOPEDIST};
 
 void initDiscPlotter(size_t len, size_t seqlen, size_t max){
-    slopetable = generateSpeedtable(256, 16, 4);
+    slopetable = generateSpeedtable(len, seqlen, max);
 }
 
 void terminateDiscPlotter(void){
     if (slopetable) destroySpeedtable(slopetable);
 }
 
-void plotDiscs(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect renderRect){
+void plotDiscs(Renderer_t *renderer, Texture_t *texture, drawingObjTargetRect_t renderRect){
     size_t i;
     for (i = 0; i<DOTS; ++i){
         renderRect.x = (SCREEN_WIDTH/2)+sintable[sinpos[i]]-renderRect.w/2;

@@ -8,6 +8,13 @@
 #define SCREEN_WIDTH 512
 #define SCREEN_HEIGHT 512
 
+typedef size_t drawingObjDim_t;
+
+typedef SDL_Rect drawingObjTargetRect_t;
+
+typedef SDL_Renderer Renderer_t;
+typedef SDL_Texture Texture_t;
+
 //should stay within uint8_t range
 enum BUSYCIRC_ERRCODES{NOERR, SDL_INIT_ERR, TTF_INIT_ERR, TTF_LOAD_ERR, SDL_WINDOW_ERR, SDL_DRAWDISC_ERR, SDL_RENDERER_ERR, OTHER_ERR};
 void performSDLInit(void);

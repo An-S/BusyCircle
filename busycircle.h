@@ -24,4 +24,5 @@ void terminateDiscPlotter(void);
 
 int mainProg(void);
 
+
 #endif // BUSYCIRCLE_H_INCLUDED
