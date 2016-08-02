@@ -1,4 +1,3 @@
-#include "busycircle.h"
 #include "busycircleInterface.h"
 
 int *slopetable;
