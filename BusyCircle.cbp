@@ -76,6 +76,7 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DCBM_TARGET" />
+					<Add directory="cbm/include" />
 				</Compiler>
 			</Target>
 		</Build>
@@ -83,92 +84,67 @@
 			<Add directory="../MyCLib" />
 			<Add directory="../../DevelLibs/SDL/mingw/SDL2-2.0.4/include" />
 			<Add directory="../../DevelLibs/SDL/mingw/SDL2_ttf-2.0.14/i686-w64-mingw32/include/SDL2" />
+			<Add directory="share/include" />
 		</Compiler>
 		<Linker>
 			<Add directory="../../DevelLibs/SDL/mingw/SDL2-2.0.4/i686-w64-mingw32/lib" />
 			<Add directory="../../DevelLibs/SDL/mingw/SDL2_ttf-2.0.14/i686-w64-mingw32/bin" />
 		</Linker>
-		<Unit filename="CBM_Resources.c">
+		<Unit filename="Makefile" />
+		<Unit filename="busyCircleMain_linux.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="cbm/include/busycircle_CBM.h" />
+		<Unit filename="cbm/src/CBM_Resources.c">
 			<Option compilerVar="CC" />
 			<Option target="CBMDebug" />
 		</Unit>
-		<Unit filename="SDL_Resources.c">
+		<Unit filename="cbm/src/plotDIscs_CBM.c">
 			<Option compilerVar="CC" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="test" />
-			<Option target="Linux Debug" />
-		</Unit>
-		<Unit filename="SDL_functions.c">
-			<Option compilerVar="CC" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="test" />
-			<Option target="Linux Debug" />
-		</Unit>
-		<Unit filename="TTF_functions.c">
-			<Option compilerVar="CC" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="test" />
-			<Option target="Linux Debug" />
-		</Unit>
-		<Unit filename="busyCircleMain.c">
-			<Option compilerVar="CC" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Linux Debug" />
-			<Option target="CBMDebug" />
-		</Unit>
-		<Unit filename="busycircle.h" />
-		<Unit filename="busycircleInterface.h" />
-		<Unit filename="busycircle_CBM.h">
-			<Option target="CBMDebug" />
-		</Unit>
-		<Unit filename="busycircle_SDL.h">
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Linux Debug" />
-		</Unit>
-		<Unit filename="generateSpeedtable.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="getDrawingPosition.c">
-			<Option compilerVar="CC" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Linux Debug" />
 			<Option target="CBMDebug" />
 		</Unit>
 		<Unit filename="mainProg.c">
 			<Option compilerVar="CC" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Linux Debug" />
-			<Option target="CBMDebug" />
-		</Unit>
-		<Unit filename="plotDIscs_CBM.c">
-			<Option compilerVar="CC" />
-			<Option target="CBMDebug" />
 		</Unit>
 		<Unit filename="plotDiscs.c">
 			<Option compilerVar="CC" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="test" />
-			<Option target="Linux Debug" />
 		</Unit>
-		<Unit filename="printSDLError2.c">
+		<Unit filename="share/SDL/include/busycircle_SDL.h" />
+		<Unit filename="share/SDL/src/SDL_Resources.c">
 			<Option compilerVar="CC" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="test" />
-			<Option target="Linux Debug" />
 		</Unit>
-		<Unit filename="sintable.h" />
-		<Unit filename="testGenerateSpeedtable.c">
+		<Unit filename="share/SDL/src/SDL_functions.c">
 			<Option compilerVar="CC" />
-			<Option target="test" />
+		</Unit>
+		<Unit filename="share/SDL/src/TTF_functions.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="share/SDL/src/printSDLError.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="share/SDL/src/printSDLError2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="share/include/busycircle.h" />
+		<Unit filename="share/include/busycircleInterface.h" />
+		<Unit filename="share/include/sintable.h" />
+		<Unit filename="share/src/busyCircleMain.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="share/src/calcsin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="share/src/generateSpeedtable.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="share/src/getDrawingPosition.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="share/src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="share/testsrc/testGenerateSpeedtable.c">
+			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
 			<code_completion />
