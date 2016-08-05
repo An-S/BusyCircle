@@ -7,17 +7,21 @@ ldflags := $(shell /usr/local/bin/sdl2-config --libs)
 exebasename = busycircle
 
 #define basedirs for sources
+cbmbasedir = /home/mc78/Coding_64
 cbmdir = ./cbm
 linuxdir = ./linux
 windir = ./win
 sharedir = ./share
+testdir = ./tests
 sdldir = /usr/include/SDL2
 sdllibdir = /usr/lib/x86_64-linux-gnu/
 
 #get lists of source and header files for all targets
 cbmtargets = $(wildcard $(cbmdir)/src/*.c)
+cbmtests = $(wildcard $(cbmdir)/testsrc/*.c)
 linuxtargets = $(wildcard $(linuxdir)/src/*.c)
 sharetargets = $(wildcard $(sharedir)/src/*.c)
+sharetests = $(wildcard $(sharedir)/testsrc/*.c)
 sdltargets = $(wildcard $(sharedir)/SDL/src/*.c)
 
 cbmheads = $(wildcard $(cbmdir)/include/*.h)
@@ -28,13 +32,16 @@ sdlheads = $(wildcard $(sharedir)/SDL/include/*.h)
 #get object file names from source file names
 cbmobjs = $(patsubst $(cbmdir)/src/%.c, $(cbmdir)/obj/%.o, $(cbmtargets))\
 	$(patsubst $(sharedir)/obj%, $(sharedir)/cbmobj%, $(shareobjs))
+cbmtestprgs = $(patsubst $(cbmdir)/testsrc/%.c, $(testdir)/cbm/%.prg, $(cbmtests))\
+				$(patsubst $(sharedir)/testsrc/%.c, $(testdir)/cbm/%.prg, $(sharetests))
 
 linuxobjs = $(patsubst $(linuxdir)/src/%.c, $(linuxdir)/obj/%.o, $(linuxtargets))
 shareobjs = $(patsubst $(sharedir)/src/%.c, $(sharedir)/obj/%.o, $(sharetargets))
+sharetestobjs = $(patsubst $(sharedir)/testsrc/%.c, $(sharedir)/testobj/%.o, $(sharetargets))
 sdlobjs = $(patsubst $(sharedir)/SDL/src/%.c, $(sharedir)/SDL/obj/%.o, $(sdltargets))
 
 shareincdirs = ../MCLib
-cbmincdirs = $(cbmdir)/include $(sharedir)/include $(shareincdirs)
+cbmincdirs = $(cbmbasedir)/include $(cbmdir)/include $(sharedir)/include $(shareincdirs)
 linuxincdirs = $(linuxdir)/include $(sharedir)/include $(sharedir)/SDL/include \
 				$(shareincdirs) $(sdldir)
 
@@ -45,6 +52,16 @@ cc65test = ./cbm/src/tests/*.o
 $(cbmdir)/obj/%.o: $(cbmdir)/src/%.c
 	cl65 $(cc65flags) -o $@ $<
 
+$(testdir)/cbm/%.prg: $(cbmdir)/testsrc/%.c
+	-cl65 $(subst -c, ,$(cc65flags)) $(cbmobjs) -o $@ $<
+
+$(sharedir)/cbmobj/%.o: $(sharedir)/src/%.c
+	cl65 $(cc65flags) -o $@ $<
+
+$(testdir)/cbm/%.prg: $(sharedir)/testsrc/%.c
+	-cl65 $(subst -c, ,$(cc65flags)) $(cbmobjs) -o $@ $<
+
+
 $(linuxdir)/obj/%.o: $(linuxdir)/src/%.c
 	gcc $(ccflags) -D LINUX_TARGET $(addprefix -I, $(linuxincdirs)) -o $@ $<
 
@@ -54,14 +71,14 @@ $(sharedir)/obj/%.o: $(sharedir)/src/%.c
 $(sharedir)/SDL/obj/%.o: $(sharedir)/SDL/src/%.c
 	gcc $(ccflags) -D LINUX_TARGET $(addprefix -I, $(linuxincdirs)) -o $@ $<
 
-$(sharedir)/cbmobj/%.o: $(sharedir)/src/%.c
-	cl65 $(cc65flags) -o $@ $<
 
 #define targets and their respective dependencies on header files
 share: $(shareobjs) $(shareheads)
 
-cbm: $(cbmobjs) $(cbmheads)  $(shareheads)
+cbm: $(cbmobjs) $(cbmheads) $(shareheads)
 	cl65 $(ld65flags) -o $(exebasename).prg $(cbmobjs)
+
+cbmtests: cbm $(cbmtestprgs)
 
 linux: share $(linuxobjs) $(sdlobjs) $(linuxheads) $(sdlheads)
 	echo ldflags: $(ldflags)

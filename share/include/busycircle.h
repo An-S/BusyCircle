@@ -1,7 +1,6 @@
 #ifndef BUSYCIRCLE_H_INCLUDED
 #define BUSYCIRCLE_H_INCLUDED
 
-#include <stdheaders.h>
 #define DOTS 8
 #define DISTANCE 12
 #define SLOPEDIST 4
@@ -24,5 +23,6 @@ void terminateDiscPlotter(void);
 
 int mainProg(void);
 
+int getDrawingObjectPosition(int x, int y, drawingObjDim_t w, drawingObjDim_t h, drawingObjTargetRect_t *);
 
 #endif // BUSYCIRCLE_H_INCLUDED

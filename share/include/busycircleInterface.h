@@ -1,7 +1,7 @@
 #ifndef BUSYCIRCLEINFERFACE_H_INCLUDED
 #define BUSYCIRCLEINFERFACE_H_INCLUDED
 
-#include "busycircle.h"
+#include <stdheaders.h>
 
 #ifdef WINDOWS_TARGET
     #include "busycircle_SDL.h"
@@ -14,6 +14,9 @@
 #ifdef CBM_TARGET
     #include "busycircle_CBM.h"
 #endif // TARGET_OS
+
+#include "busycircle.h"
+
 
 #endif // BUSYCIRCLEINFERFACE_H_INCLUDED
 
