@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
  {
     SDL_Rect renderRect;
     SDL_Renderer *renderer;
-    SDL_Texture *texture;
+    SDL_Texture *texture;/home/mc78/Dokumente/Programmieren/ownCPrograms/BusyCircle/
 
     //init resources registers exit handler
     initResources();

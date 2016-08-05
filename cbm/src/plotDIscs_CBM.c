@@ -14,7 +14,7 @@ int slopepos[DOTS] = {0*SLOPEDIST, 1*SLOPEDIST, 2*SLOPEDIST, 3*SLOPEDIST,
                         4*SLOPEDIST, 5*SLOPEDIST, 6*SLOPEDIST, 7*SLOPEDIST};
 
 void initDiscPlotter(size_t len, size_t seqlen, size_t max){
-    slopetable = generateSpeedtable(256, 16, 4);
+    slopetable = generateSpeedtable(len, seqlen, max);
 }
 
 void terminateDiscPlotter(void){

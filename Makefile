@@ -1,23 +1,29 @@
 #define compiler flags for cc65 as well as gcc
-cc65flags = -c -O -l $(basename $<).lst $(addprefix -I, $(cbmincdirs) $(shareincdirs)) $(addprefix -Wa -I, $(cbmincdirs))
-ccflags = -c -O -Wa --std=gnu11 -fplan9-extensions
+cc65flags = -c -O -l $(basename $<).lst $(addprefix -I, $(cbmincdirs))\
+			 $(addprefix -Wa -I, $(cbmincdirs)) -D CBM_TARGET
+ccflags := -c -O --std=gnu11 -fplan9-extensions $(shell /usr/local/bin/sdl2-config --cflags)
 ld65flags = -Ln $(cbmdir)/src/$(exebasename).lbl -m $(cbmdir)/src/$(exebasename).map
-
-exebasename = busycirle
+ldflags := $(shell /usr/local/bin/sdl2-config --libs)
+exebasename = busycircle
 
 #define basedirs for sources
 cbmdir = ./cbm
 linuxdir = ./linux
 windir = ./win
 sharedir = ./share
+sdldir = /usr/include/SDL2
+sdllibdir = /usr/lib/x86_64-linux-gnu/
 
 #get lists of source and header files for all targets
 cbmtargets = $(wildcard $(cbmdir)/src/*.c)
 linuxtargets = $(wildcard $(linuxdir)/src/*.c)
 sharetargets = $(wildcard $(sharedir)/src/*.c)
+sdltargets = $(wildcard $(sharedir)/SDL/src/*.c)
+
 cbmheads = $(wildcard $(cbmdir)/include/*.h)
 linuxheads = $(wildcard $(linuxdir)/include/*.h)
 shareheads = $(wildcard $(sharedir)/include/*.h)
+sdlheads = $(wildcard $(sharedir)/SDL/include/*.h)
 
 #get object file names from source file names
 cbmobjs = $(patsubst $(cbmdir)/src/%.c, $(cbmdir)/obj/%.o, $(cbmtargets))\
@@ -25,9 +31,12 @@ cbmobjs = $(patsubst $(cbmdir)/src/%.c, $(cbmdir)/obj/%.o, $(cbmtargets))\
 
 linuxobjs = $(patsubst $(linuxdir)/src/%.c, $(linuxdir)/obj/%.o, $(linuxtargets))
 shareobjs = $(patsubst $(sharedir)/src/%.c, $(sharedir)/obj/%.o, $(sharetargets))
+sdlobjs = $(patsubst $(sharedir)/SDL/src/%.c, $(sharedir)/SDL/obj/%.o, $(sdltargets))
 
 shareincdirs = ../MCLib
-cbmincdirs = $(cbmdir)/include $(sharedir)/include
+cbmincdirs = $(cbmdir)/include $(sharedir)/include $(shareincdirs)
+linuxincdirs = $(linuxdir)/include $(sharedir)/include $(sharedir)/SDL/include \
+				$(shareincdirs) $(sdldir)
 
 #define directories with test code
 cc65test = ./cbm/src/tests/*.o
@@ -37,26 +46,49 @@ $(cbmdir)/obj/%.o: $(cbmdir)/src/%.c
 	cl65 $(cc65flags) -o $@ $<
 
 $(linuxdir)/obj/%.o: $(linuxdir)/src/%.c
-	gcc $(ccflags) -o $@ $<
+	gcc $(ccflags) -D LINUX_TARGET $(addprefix -I, $(linuxincdirs)) -o $@ $<
 
 $(sharedir)/obj/%.o: $(sharedir)/src/%.c
-	gcc $(ccflags) -o $@ $<
+	gcc $(ccflags) -D LINUX_TARGET $(addprefix -I, $(linuxincdirs)) -o $@ $<
+
+$(sharedir)/SDL/obj/%.o: $(sharedir)/SDL/src/%.c
+	gcc $(ccflags) -D LINUX_TARGET $(addprefix -I, $(linuxincdirs)) -o $@ $<
 
 $(sharedir)/cbmobj/%.o: $(sharedir)/src/%.c
 	cl65 $(cc65flags) -o $@ $<
 
 #define targets and their respective dependencies on header files
+share: $(shareobjs) $(shareheads)
+
 cbm: $(cbmobjs) $(cbmheads)  $(shareheads)
 	cl65 $(ld65flags) -o $(exebasename).prg $(cbmobjs)
 
-linux: $(linuxobjs) $(linuxheads) $(shareheads) $(cbmobjs)
+linux: share $(linuxobjs) $(sdlobjs) $(linuxheads) $(sdlheads)
+	echo ldflags: $(ldflags)
+	gcc -o $(exebasename)_lnx $(linuxobjs) $(shareobjs) $(sdlobjs) $(ldflags) -lSDL2_ttf
 
-share: $(shareobjs) $(shareheads)
+
+editcbm:
+	.PHONY editcbm
+
+	gedit $(cbmtargets) $(cbmheads) $(sharetargets) $(shareheads) Makefile &
+
+	.PHONY editlinux
+editlinux:
+	gedit $(linuxtargets) $(linuxheads) $(sharetargets) $(shareheads) $(sdltargets) $(sdlheads) Makefile &
+
+	.PHONY editwin
+editwin:
+	gedit $(wintargets) $(winheads) $(sharetargets) $(shareheads) $(sdltargets) $(sdlheads) Makefile &
+
+
+
+
 
 #target to cleanup objects and other files
-	.PHONY	clean
+	.PHONY clean
 clean:
-	rm $(linuxobjs) $(cbmobjs) $(shareobjs)
+	-rm -fr "*.o" $(linuxobjs) $(cbmobjs) $(shareobjs) $(sdlobjs)
 
 #batch build targets
 all:	cbm linux share

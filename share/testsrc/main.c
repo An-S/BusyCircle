@@ -14,7 +14,7 @@ int main()
     if (NULL == ofile) {
         perror("could not open file");
     }
-    MCLib_fprintList(ofile, "%d", sin->sintable, MCLib_fprintIntElem, sin->size, 8);
+    //MCLib_fprintList(ofile, "%d", sin->sintable, MCLib_fprintIntElem, sin->size, 8);
     //MCLib_fprintList(stdout, "%d", sin->sintable, MCLib_fprintIntElem, sin->len, 8);
     fclose(ofile);
     return 0;

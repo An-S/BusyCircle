@@ -3,10 +3,11 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="BusyCircle" />
+		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug">
+			<Target title="win">
 				<Option output="BusyCircle_dbg" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -49,7 +50,7 @@
 					<Add option="-l SDL2 -l SDL2_ttf" />
 				</Linker>
 			</Target>
-			<Target title="Linux Debug">
+			<Target title="linux">
 				<Option output="BusyCircle_dbg_lnx" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj/LnxDebug/" />
 				<Option type="1" />
@@ -67,7 +68,7 @@
 					<Add directory="/usr/lib/x86_64-linux-gnu/" />
 				</Linker>
 			</Target>
-			<Target title="CBMDebug">
+			<Target title="cbm">
 				<Option output="BusyCircle_dbg_cbm.prg" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj/CBMDebug/" />
 				<Option type="1" />
@@ -94,19 +95,12 @@
 		<Unit filename="busyCircleMain_linux.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="busycircle/main.cpp" />
 		<Unit filename="cbm/include/busycircle_CBM.h" />
 		<Unit filename="cbm/src/CBM_Resources.c">
 			<Option compilerVar="CC" />
-			<Option target="CBMDebug" />
 		</Unit>
 		<Unit filename="cbm/src/plotDIscs_CBM.c">
-			<Option compilerVar="CC" />
-			<Option target="CBMDebug" />
-		</Unit>
-		<Unit filename="mainProg.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="plotDiscs.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="share/SDL/include/busycircle_SDL.h" />
@@ -116,13 +110,13 @@
 		<Unit filename="share/SDL/src/SDL_functions.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="share/SDL/src/SDL_printError.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="share/SDL/src/TTF_functions.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="share/SDL/src/printSDLError.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="share/SDL/src/printSDLError2.c">
+		<Unit filename="share/SDL/src/mainProg.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="share/include/busycircle.h" />
@@ -131,8 +125,10 @@
 		<Unit filename="share/src/busyCircleMain.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="share/src/calcsin.c">
+		<Unit filename="share/src/calcsin._c">
 			<Option compilerVar="CC" />
+			<Option compile="1" />
+			<Option link="1" />
 		</Unit>
 		<Unit filename="share/src/generateSpeedtable.c">
 			<Option compilerVar="CC" />
@@ -140,10 +136,13 @@
 		<Unit filename="share/src/getDrawingPosition.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="share/src/main.c">
+		<Unit filename="share/testsrc/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="share/testsrc/testGenerateSpeedtable.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="win/src/mainProg.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
