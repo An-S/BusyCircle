@@ -2,11 +2,11 @@
 #include "busycircleInterface.h"
 //#include "Sprites/VIC2_Sprites.h"
 
-/*extern uint8_t spriteDef[];
+extern uint8_t spriteDef[];
 extern uint8_t spritePtr;
-*/
-uint8_t spriteDef[64];
-uint8_t spritePtr;
+
+//uint8_t spriteDef[64];
+//uint8_t spritePtr;
 
 void initResources(void){
     memset(spriteDef,0xff, SPR_BYTESIZE);

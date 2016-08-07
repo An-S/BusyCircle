@@ -21,16 +21,28 @@ void terminateDiscPlotter(void){
     if (slopetable) destroySpeedtable(slopetable);
 }
 
+/*
+CBM_discRenderer(Renderer_t *renderer, Texture_t *texture, drawingObjTargetRect_t *renderRect){
+    int x = (SCREEN_WIDTH/2)+sintable[sinpos[i]]-renderRect->w/2;
+    int y = (SCREEN_HEIGHT/2)+sintable[sinpos[i]+64]-renderRect->h/2;
+    getDrawingPosition(x,y,renderRect);
+
+}*/
+
 void plotDiscs(Renderer_t *renderer, Texture_t *texture, drawingObjTargetRect_t *renderRect){
     size_t i;
+    VIC.spr_hi_x = 0;
+    /*
     for (i = 0; i<DOTS; ++i){
-        renderRect->x = (SCREEN_WIDTH/2)+sintable[sinpos[i]]-renderRect->w/2;
-        renderRect->y = (SCREEN_HEIGHT/2)+sintable[sinpos[i]+64]-renderRect->h/2;
+        VIC.spr_pos[i].x = renderRect->x = (SCREEN_WIDTH/2)+sintable[sinpos[i]]-renderRect->w/2;
+        VIC.spr_pos[i].y = renderRect->y = (SCREEN_HEIGHT/2)+sintable[sinpos[i]+64]-renderRect->h/2;
 
         sinpos[i] = (sinpos[i]+slopetable[slopepos[i]])%256;
         slopepos[i] = (slopepos[i]+1)%256;
+
+        if (renderRect->x>>8) VIC.spr_hi_x |= powerof2table[i];
         //SDL_RenderCopy(renderer, texture, 0, &renderRect);
-    }
+    }*/
 }
 
 

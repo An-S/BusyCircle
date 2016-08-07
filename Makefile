@@ -1,8 +1,10 @@
 #define compiler flags for cc65 as well as gcc
-cc65flags = -c -O -l $(basename $<).lst $(addprefix -I, $(cbmincdirs))\
-			 $(addprefix -Wa -I, $(cbmincdirs)) -D CBM_TARGET
+cc65flags = -O $(addprefix -I, $(cbmincdirs))\
+			 -D CBM_TARGET
+cl65flags = -c -l $(basename $<).lst $(cc65flags) $(addprefix -Wa -I, $(cbmincdirs))
 ccflags := -c -O --std=gnu11 -fplan9-extensions $(shell /usr/local/bin/sdl2-config --cflags)
-ld65flags = -Ln $(cbmdir)/src/$(exebasename).lbl -m $(cbmdir)/src/$(exebasename).map
+ld65flags = -Ln $(cbmdir)/src/$(exebasename).lbl -m $(cbmdir)/src/$(exebasename).map \
+			-L $(cbmlibdir)
 ldflags := $(shell /usr/local/bin/sdl2-config --libs)
 exebasename = busycircle
 
@@ -15,9 +17,10 @@ sharedir = ./share
 testdir = ./tests
 sdldir = /usr/include/SDL2
 sdllibdir = /usr/lib/x86_64-linux-gnu/
+cbmlibdir = /home/mc78/Coding_64/lib
 
 #get lists of source and header files for all targets
-cbmtargets = $(wildcard $(cbmdir)/src/*.c)
+cbmtargets = $(wildcard $(cbmdir)/src/*.c) $(wildcard $(cbmdir)/src/*.s)
 cbmtests = $(wildcard $(cbmdir)/testsrc/*.c)
 linuxtargets = $(wildcard $(linuxdir)/src/*.c)
 sharetargets = $(wildcard $(sharedir)/src/*.c)
@@ -29,9 +32,13 @@ linuxheads = $(wildcard $(linuxdir)/include/*.h)
 shareheads = $(wildcard $(sharedir)/include/*.h)
 sdlheads = $(wildcard $(sharedir)/SDL/include/*.h)
 
+#set libraries to link
+cbmlibs = carlos.lib
 #get object file names from source file names
-cbmobjs = $(patsubst $(cbmdir)/src/%.c, $(cbmdir)/obj/%.o, $(cbmtargets))\
-	$(patsubst $(sharedir)/obj%, $(sharedir)/cbmobj%, $(shareobjs))
+cbmobjs = $(patsubst $(cbmdir)/src/%.s, $(cbmdir)/obj/%.o, \
+			$(patsubst $(cbmdir)/src/%.c, $(cbmdir)/obj/%.o, $(cbmtargets)) ) \
+		  $(patsubst $(sharedir)/obj%, $(sharedir)/cbmobj%, $(shareobjs))
+
 cbmtestprgs = $(patsubst $(cbmdir)/testsrc/%.c, $(testdir)/cbm/%.prg, $(cbmtests))\
 				$(patsubst $(sharedir)/testsrc/%.c, $(testdir)/cbm/%.prg, $(sharetests))
 
@@ -50,17 +57,23 @@ cc65test = ./cbm/src/tests/*.o
 
 #autorules to compile sources to objects for each target
 $(cbmdir)/obj/%.o: $(cbmdir)/src/%.c
-	cl65 $(cc65flags) -o $@ $<
+	cc65 $(cc65flags) -E -tc64 -o $@.i $<
+	cl65 $(cl65flags) -o $@ $<
+
+$(cbmdir)/obj/%.o: $(cbmdir)/src/%.s
+	cl65 $(cl65flags) -o $@ $<
 
 $(testdir)/cbm/%.prg: $(cbmdir)/testsrc/%.c
-	-cl65 $(subst -c, ,$(cc65flags)) $(cbmobjs) -o $@ $<
+	-@echo "### $< ###:"
+	-cl65 $(cc65flags) $(ld65flags) -o $@ $(cbmobjs) $(cbmlibs) $<
 
 $(sharedir)/cbmobj/%.o: $(sharedir)/src/%.c
-	cl65 $(cc65flags) -o $@ $<
+	cc65 $(cc65flags) -E -tc64 -o $@.i $<
+	cl65 $(cl65flags) -o $@ $<
 
 $(testdir)/cbm/%.prg: $(sharedir)/testsrc/%.c
-	-cl65 $(subst -c, ,$(cc65flags)) $(cbmobjs) -o $@ $<
-
+	-@echo "### $< ###:"
+	-cl65 $(cc65flags) $(ld65flags) -o $@ $(cbmobjs) $(cbmlibs) $<
 
 $(linuxdir)/obj/%.o: $(linuxdir)/src/%.c
 	gcc $(ccflags) -D LINUX_TARGET $(addprefix -I, $(linuxincdirs)) -o $@ $<
@@ -76,42 +89,49 @@ $(sharedir)/SDL/obj/%.o: $(sharedir)/SDL/src/%.c
 share: $(shareobjs) $(shareheads)
 
 cbm: $(cbmobjs) $(cbmheads) $(shareheads)
-	cl65 $(ld65flags) -o $(exebasename).prg $(cbmobjs)
+	cl65 $(ld65flags) -o $(exebasename).prg $(cbmobjs) $(cbmlibs)
 
-cbmtests: cbm $(cbmtestprgs)
+cbmtests: $(cbmobjs) $(cbmheads) $(shareheads) $(cbmtestprgs)
 
 linux: share $(linuxobjs) $(sdlobjs) $(linuxheads) $(sdlheads)
 	echo ldflags: $(ldflags)
 	gcc -o $(exebasename)_lnx $(linuxobjs) $(shareobjs) $(sdlobjs) $(ldflags) -lSDL2_ttf
 
-
+.PHONY: editcbm
 editcbm:
-	.PHONY editcbm
 
 	gedit $(cbmtargets) $(cbmheads) $(sharetargets) $(shareheads) Makefile &
 
-	.PHONY editlinux
+.PHONY: editlinux
 editlinux:
 	gedit $(linuxtargets) $(linuxheads) $(sharetargets) $(shareheads) $(sdltargets) $(sdlheads) Makefile &
 
-	.PHONY editwin
+.PHONY: editwin
 editwin:
 	gedit $(wintargets) $(winheads) $(sharetargets) $(shareheads) $(sdltargets) $(sdlheads) Makefile &
 
-
-
-
-
+.PHONY: printvars
+printvars:
+	@echo "*** CBM targets: $(cbmtargets) ***"
+	@echo "*** CBM objects: $(cbmobjs) ***"
+	@echo "*** LINUX targets: $(linuxtargets) ***"
+	@echo "*** LINUX objects: $(linuxobjs) ***"
+	@echo "*** SHARE targets: $(sharetargets) ***"
+	@echo "*** SHARE objects: $(shareobjs) ***"
+	@echo "*** SDL targets: $(sdltargets) ***"
+	@echo "*** SDL objects: $(sdlobjs) ***"
+	@echo "*** CBM tests: $(cbmtests) ***"
+	@echo "*** SHARE tests: $(sharetests) ***"
+	@echo "*** CBM testprgs: $(cbmtestprgs) ***"
+	@echo "*** CBM libs: $(cbmlibs) ***"
 #target to cleanup objects and other files
-	.PHONY clean
+.PHONY: clean
 clean:
-	-rm -fr "*.o" $(linuxobjs) $(cbmobjs) $(shareobjs) $(sdlobjs)
-
+	-rm -fr "*.o" $(linuxobjs) $(cbmobjs) $(shareobjs) $(sdlobjs) $(cbmtestprgs)
+	-rm -R *.prg
 #batch build targets
+.PHONY: all
 all:	cbm linux share
-	echo $(cbmtargets), $(cbmobjs)
-	echo $(linuxtargets), $(linuxobjs)
-	echo $(sharetargets), $(shareobjs)
 
 #for eventual usage of makedepend
 # DO NOT DELETE

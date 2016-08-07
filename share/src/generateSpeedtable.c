@@ -1,4 +1,4 @@
-#include "busycircle.h"
+#include "busycircleInterface.h"
 
 speedTableElem_t *generateSpeedtable(size_t len, size_t seqlen, size_t max){
     size_t i;

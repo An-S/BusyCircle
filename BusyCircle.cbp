@@ -107,14 +107,17 @@
 		<Unit filename="busyCircleMain_linux.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="busycircle/main.cpp" />
 		<Unit filename="cbm/include/busycircle_CBM.h" />
 		<Unit filename="cbm/src/CBM_Resources.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="cbm/src/CBM_getVICSpriteRect.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="cbm/src/CBM_mainProg.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="cbm/src/CBM_spriteResource.s" />
 		<Unit filename="cbm/src/plotDIscs_CBM.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -140,9 +143,6 @@
 		<Unit filename="share/include/busycircle.h" />
 		<Unit filename="share/include/busycircleInterface.h" />
 		<Unit filename="share/include/sintable.h" />
-		<Unit filename="share/src/busyCircleMain.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="share/src/calcsin._c">
 			<Option compilerVar="CC" />
 			<Option compile="1" />
@@ -154,6 +154,9 @@
 		<Unit filename="share/src/getDrawingPosition.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="share/testsrc/busyCircleMain.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="share/testsrc/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -161,9 +164,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="share/testsrc/testGetDrawingPosition.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="win/src/mainProg.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

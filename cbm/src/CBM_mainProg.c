@@ -1,14 +1,17 @@
 #include "busycircleInterface.h"
 
 int mainProg(void){
-    printf("c64 main called!");
-    /*
-    SDL_Rect renderRect;
-    SDL_Renderer *renderer;
-    SDL_Texture *texture;
+    drawingObjTargetRect_t *renderRect;
+    Renderer_t *renderer;
+    Texture_t *texture;
 
+    printf("def spr rect\n");
+    getVICSpriteRect(renderRect);
+    printf("init res\n");
     initResources();
-    renderer = getRenderer();
+    printf("plotdiscs!");
+    plotDiscs(renderer, texture, renderRect);
+    /*renderer = getRenderer();
     texture = getTexture();
 
     SDL_QueryTexture(texture, 0, 0, &(renderRect.w), &(renderRect.h));

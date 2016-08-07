@@ -18,4 +18,6 @@
     typedef void Texture_t(void);
 	typedef void Target_t(void);
 
+    int getVICSpriteRect(drawingObjTargetRect_t *rect);
+
 #endif // BUSYCIRCLE_CBM_H_INCLUDED

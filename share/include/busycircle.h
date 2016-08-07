@@ -23,6 +23,7 @@ void terminateDiscPlotter(void);
 
 int mainProg(void);
 
-int getDrawingObjectPosition(int x, int y, drawingObjDim_t w, drawingObjDim_t h, drawingObjTargetRect_t *);
+int getDrawingObjectPosition(int x, int y, drawingObjTargetRect_t *);
+void plotDiscs(Renderer_t *renderer, Texture_t *texture, drawingObjTargetRect_t *renderRect);
 
 #endif // BUSYCIRCLE_H_INCLUDED
