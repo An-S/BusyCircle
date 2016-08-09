@@ -1,6 +1,6 @@
 #include "busycircleInterface.h"
 
-int *slopetable;
+speedTableElem_t *slopetable;
 
 int sintable[] = {
     #include "sintable.h"
@@ -30,19 +30,29 @@ CBM_discRenderer(Renderer_t *renderer, Texture_t *texture, drawingObjTargetRect_
 }*/
 
 void plotDiscs(Renderer_t *renderer, Texture_t *texture, drawingObjTargetRect_t *renderRect){
-    size_t i;
+    static uint8_t i, ix2;
+    int sinx, siny;
     VIC.spr_hi_x = 0;
-    /*
-    for (i = 0; i<DOTS; ++i){
-        VIC.spr_pos[i].x = renderRect->x = (SCREEN_WIDTH/2)+sintable[sinpos[i]]-renderRect->w/2;
-        VIC.spr_pos[i].y = renderRect->y = (SCREEN_HEIGHT/2)+sintable[sinpos[i]+64]-renderRect->h/2;
+
+    for (i = 0, ix2=0; i<DOTS; ++i,ix2+=2){
+        sinx = (SCREEN_WIDTH/2)+sintable[sinpos[i]]-renderRect->w/2;
+        siny = (SCREEN_HEIGHT/2)+sintable[sinpos[i]+64]-renderRect->h/2;
+        sinx/=2;
+        siny/=2;
+
+        renderRect->x = sinx; //(SCREEN_WIDTH/2)+sintable[sinpos[i]]-renderRect->w/2;
+        asm("ldx %v", ix2);
+        asm("sta %w,x", 0xd000);
+        __AX__ =  renderRect->y = (SCREEN_HEIGHT/2)+sintable[sinpos[i]+64]-renderRect->h/2;
+        asm("ldx %v", ix2);
+        asm("sta %w,x", 0xd001);
 
         sinpos[i] = (sinpos[i]+slopetable[slopepos[i]])%256;
         slopepos[i] = (slopepos[i]+1)%256;
 
-        if (renderRect->x>>8) VIC.spr_hi_x |= powerof2table[i];
+        if ((renderRect->x>>8) > 0) VIC.spr_hi_x |= powerof2table[i];
         //SDL_RenderCopy(renderer, texture, 0, &renderRect);
-    }*/
+    }
 }
 
 

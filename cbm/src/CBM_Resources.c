@@ -12,9 +12,11 @@ void initResources(void){
     memset(spriteDef,0xff, SPR_BYTESIZE);
     //asm("lda #>%w", spriteDef);
     //asm("")
-    spritePtr = ( (uint8_t)spriteDef/SPR_BLOCKSIZE )&255;//__AX__;
+    memset(spritePtr,
+    (uint8_t)( (uintptr_t)spriteDef/SPR_BLOCKSIZE),
+    8);//__AX__;
     atexit(freeResources);
-
+    VIC.spr_ena = 0xff;
     initDiscPlotter(256, 16, 4);
 
 }

@@ -1,5 +1,4 @@
-#include "busycircle.h"
-#include "busycircle_SDL.h"
+#include "busycircleInterface.h"
 
 /** \brief open a font and puts data into font structure
  *

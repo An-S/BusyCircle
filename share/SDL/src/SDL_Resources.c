@@ -1,5 +1,5 @@
-#include "busycircle.h"
-#include "busycircle_SDL.h"
+#include "busycircleInterface.h"
+
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;

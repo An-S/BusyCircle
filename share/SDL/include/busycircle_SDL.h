@@ -32,7 +32,7 @@ TTF_Font *openFont(void);
 void closeFont(TTF_Font *fnt);
 
 void printSDL_Error(const char *errMsg, ...);
-void plotDiscs(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect renderRect);
+//void plotDiscs(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect renderRect);
 
 
 #endif // BUSYCIRCLE_SDL_H_INCLUDED

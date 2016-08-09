@@ -1,5 +1,4 @@
-#include "busycircle_SDL.h"
-#include "busycircle.h"
+#include "busycircleInterface.h"
 
 int mainProg(void){
     SDL_Rect renderRect;
@@ -15,7 +14,7 @@ int mainProg(void){
     while(!SDL_checkQuitEvent()) {
 
         SDL_RenderClear(renderer);
-        plotDiscs(renderer, texture, renderRect);
+        plotDiscs(renderer, texture, &renderRect);
         SDL_RenderPresent(renderer);
         //SDL_Delay(1000/70);
     }

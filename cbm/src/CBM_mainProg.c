@@ -1,16 +1,18 @@
 #include "busycircleInterface.h"
 
 int mainProg(void){
-    drawingObjTargetRect_t *renderRect;
-    Renderer_t *renderer;
-    Texture_t *texture;
+    static drawingObjTargetRect_t renderRect;
+    Renderer_t *renderer = NULL;
+    Texture_t *texture = NULL;
 
     printf("def spr rect\n");
-    getVICSpriteRect(renderRect);
+    getVICSpriteRect(&renderRect);
     printf("init res\n");
     initResources();
     printf("plotdiscs!");
-    plotDiscs(renderer, texture, renderRect);
+    while(true){
+        plotDiscs(renderer, texture, &renderRect);
+    }
     /*renderer = getRenderer();
     texture = getTexture();
 
