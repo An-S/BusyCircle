@@ -2,19 +2,22 @@
 
 speedTableElem_t *slopetable;
 
-int sintable[] = {
-    #include "sintable.h"
-    /*,
-    #include "sintable.h"*/
-};
-
-uint8_t sinpos[DOTS] = {0*DISTANCE,1*DISTANCE,2*DISTANCE,3*DISTANCE,
-                    4*DISTANCE,5*DISTANCE,6*DISTANCE,7*DISTANCE};
-uint8_t slopepos[DOTS] = {0*SLOPEDIST, 1*SLOPEDIST, 2*SLOPEDIST, 3*SLOPEDIST,
-                        4*SLOPEDIST, 5*SLOPEDIST, 6*SLOPEDIST, 7*SLOPEDIST};
-
 void initDiscPlotter(size_t len, size_t seqlen, size_t max){
+    int i;
     slopetable = generateSpeedtable(len, seqlen, max);
+
+    //scale sintable to appropriate radius
+    for (i = ELEMCNT(sintable)-1; i>0; --i){
+        sintable[i] = (sintable[i]*64)/200;
+    }
+}
+
+int getCurrentSinpos(uint8_t i){
+    return sinpos[i];
+}
+
+int getCurrentSlopepos(uint8_t i){
+    return sinpos[i];
 }
 
 void terminateDiscPlotter(void){
@@ -29,7 +32,7 @@ CBM_discRenderer(Renderer_t *renderer, Texture_t *texture, drawingObjTargetRect_
 
 }*/
 
-void plotDiscs(Renderer_t *renderer, Texture_t *texture, drawingObjTargetRect_t *renderRect){
+void plotDiscs(Resources_t *res, drawingObjTargetRect_t *renderRect){
     static uint8_t i, ix2;
     int sinx,
         siny,
@@ -39,12 +42,13 @@ void plotDiscs(Renderer_t *renderer, Texture_t *texture, drawingObjTargetRect_t 
 
     VIC.spr_hi_x = 0;
 
+    waitretrace();
     for (i = 0, ix2=0; i<DOTS; ++i,ix2+=2){
-        sinpos_current = sinpos[i];
-        slopepos_current = slopepos[i];
+        sinpos_current = getCurrentSinpos(i);
+        slopepos_current = getCurrentSlopepos(i);
 
-        sinx = offsetx+sintable[sinpos_current]/2;
-        siny = offsety+sintable[sinpos_current+64]/2;
+        sinx = offsetx+sintable[sinpos_current];
+        siny = offsety+sintable[sinpos_current+64];
         //sinx/=2;
         //siny/=2;
 
@@ -54,6 +58,9 @@ void plotDiscs(Renderer_t *renderer, Texture_t *texture, drawingObjTargetRect_t 
         __AX__ = siny;//(SCREEN_HEIGHT/2)+sintable[sinpos[i]+64]-renderRect->h/2;
         asm("ldx %v", ix2);
         asm("sta %w,x", 0xd001);
+
+        updateSinpos(sinpos_current, slopepos_current, i);
+        updateSlopepos(slopepos_current, i);
 
         sinpos[i] = (sinpos_current+slopetable[slopepos_current])%256;
         slopepos[i] = (slopepos_current+1)%256;

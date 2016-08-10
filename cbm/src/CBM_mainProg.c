@@ -2,16 +2,15 @@
 
 int mainProg(void){
     static drawingObjTargetRect_t renderRect;
-    Renderer_t *renderer = NULL;
-    Texture_t *texture = NULL;
+    Resources_t *res = NULL;
 
     printf("def spr rect\n");
     getVICSpriteRect(&renderRect);
     printf("init res\n");
-    initResources();
+    res = initResources();
     printf("plotdiscs!");
     while(true){
-        plotDiscs(renderer, texture, &renderRect);
+        plotDiscs(res, &renderRect);
     }
     /*renderer = getRenderer();
     texture = getTexture();
@@ -26,6 +25,7 @@ int mainProg(void){
         //SDL_Delay(1000/70);
     }
 */
+    freeResources(res);
     return 0;
 
 }

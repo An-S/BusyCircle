@@ -2,6 +2,7 @@
 #define BUSYCIRCLEINFERFACE_H_INCLUDED
 
 #include <stdheaders.h>
+#include <cmacros.h>
 
 #ifdef WINDOWS_TARGET
     #include "busycircle_SDL.h"

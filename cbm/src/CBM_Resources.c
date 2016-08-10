@@ -3,7 +3,7 @@
 //#include "Sprites/VIC2_Sprites.h"
 
 extern VIC2SpriteBlock_t spriteDef;
-extern uint8_t spritePtr;
+extern VIC2SpritePointers_t spritePtr;
 
 //uint8_t spriteDef[64];
 //uint8_t spritePtr;
@@ -15,7 +15,7 @@ Renderer_t *getRenderer(void){
 Texture_t *getTexture(void){
     Texture_t *tex = malloc(sizeof(Texture_t));
     tex->sprDef = &spriteDef;
-    tex->sprPtrs = (VIC2SpritePointers_t*)&spritePtr;
+    tex->sprPtrs = &spritePtr;
     memset(spriteDef,0xff, SPR_BYTESIZE);
 
     return tex;//texture;
@@ -30,10 +30,11 @@ Resources_t *initResources(void){
 
     memset(spritePtr,
     (uint8_t)( (uintptr_t)spriteDef/SPR_BLOCKSIZE),
-    8);//__AX__;
+    sizeof(spritePtr));//__AX__;
 
     VIC.spr_ena = 0xff;
     initDiscPlotter(256, 16, 4);
+    return res;
 }
 
 //frees the resources again
