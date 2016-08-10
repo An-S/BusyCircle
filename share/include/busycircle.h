@@ -12,8 +12,8 @@ speedTableElem_t *generateSpeedtable(size_t len, size_t seqlen, size_t max);
 int destroySpeedtable(speedTableElem_t *speedTable);
 
 
-void initResources(void);
-void freeResources(void);
+Resources_t *initResources(void);
+void freeResources(Resources_t *res);
 
 void setErrorAndExit(int exitcode);
 int getError(void);

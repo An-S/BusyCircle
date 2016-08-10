@@ -8,6 +8,8 @@
 
     typedef uint8_t drawingObjDim_t;
 
+    //define structure for size and position of sprite resembling
+    //SDL_Rect
     typedef struct{
         int x,y;
         size_t w,h;
@@ -15,9 +17,19 @@
     }drawingObjTargetRect_t;
 
     typedef void Renderer_t(void);
-    typedef void Texture_t(void);
-	typedef void Target_t(void);
 
-    int getVICSpriteRect(drawingObjTargetRect_t *rect);
+    //define texture struct which holds sprite definition similar to
+    //SDL_Texture which holds the shape definition of the discs to be drawn
+    typedef struct{
+        VIC2SpriteBlock_t *sprDef;
+        VIC2SpritePointers_t *sprPtrs;
+    } Texture_t;
+
+    typedef struct{
+        Texture_t *tex;
+        Renderer_t *rend;
+    } Resources_t;
+
+	int getVICSpriteRect(drawingObjTargetRect_t *rect);
 
 #endif // BUSYCIRCLE_CBM_H_INCLUDED
