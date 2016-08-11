@@ -20,48 +20,48 @@ uint8_t slopepos[DOTS] = 	{
 								4*SLOPEDIST, 5*SLOPEDIST, 6*SLOPEDIST, 7*SLOPEDIST
 							};
 
-int sinpos_current, slopepos_current;
-uint8_t index;
+static int sinpos_current, slopepos_current;
+static uint8_t sinindex;
 
 void resetSinIndex(void){
-	index = 0;
+	sinindex = 0;
 }
 
 uint8_t getSinIndex(void){
-	return index;
+	return sinindex;
 }
 
-bool testSinIndexRange(uint8_t max){
-	return index<max;
-}
+//bool testSinIndexRange(uint8_t max){
+//	return index<max;
+//}
 
 void incSinIndex(void){
-	++index;
+	++sinindex;
 }
 
 int getCurrentSinValue(void){
-	static uint8_t state;
+	static uint8_t state = GETXSIN;
 	int sinval;
 
 	switch(state){
 		case GETXSIN:
-			slopepos_current = slopepos[index];
-			sinval = sintable[sinpos_current = sinpos[index]];
+			slopepos_current = slopepos[sinindex];
+			sinval = sintable[sinpos_current = sinpos[sinindex]];
 			break;
 		case GETYSIN:
-			sinval = sintable[sinpos_current+64];
+			sinval = sintable[sinpos_current+(ELEMCNT(sintable)/8)];
 		default: break;
 	}
 	if (NOSINSTATE == ++state){
-		state = 0;
+		state = GETXSIN;
 	}
 
 	return sinval;
 }
 
 void updateSin(speedTableElem_t *slopetable){
-    sinpos[index] = (sinpos_current+slopetable[slopepos_current])%256;
-	slopepos[index] = (slopepos_current+1)%256;
+    sinpos[sinindex] = (sinpos_current+slopetable[slopepos_current])%256;
+	slopepos[sinindex] = (slopepos_current+1)%256;
 }
 
 void scaleSin(uint8_t max){

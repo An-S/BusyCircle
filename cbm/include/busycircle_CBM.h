@@ -25,11 +25,6 @@
         VIC2SpritePointers_t *sprPtrs;
     } Texture_t;
 
-    typedef struct{
-        Texture_t *tex;
-        Renderer_t *rend;
-    } Resources_t;
-
-	int getVICSpriteRect(drawingObjTargetRect_t *rect);
+   	int getVICSpriteRect(drawingObjTargetRect_t *rect);
 
 #endif // BUSYCIRCLE_CBM_H_INCLUDED

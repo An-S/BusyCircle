@@ -2,7 +2,7 @@
 cc65flags = -O $(addprefix -I, $(cbmincdirs))\
 			 -D CBM_TARGET
 cl65flags = -c -l $(basename $<).lst $(cc65flags) $(addprefix -Wa -I, $(cbmincdirs))
-ccflags := -c -O --std=gnu11 -fplan9-extensions $(shell /usr/local/bin/sdl2-config --cflags)
+ccflags := -c -O -g --std=gnu11 -fplan9-extensions $(shell /usr/local/bin/sdl2-config --cflags)
 ld65flags = -Ln $(cbmdir)/src/$(exebasename).lbl -m $(cbmdir)/src/$(exebasename).map \
 			-L $(cbmlibdir)
 ldflags := $(shell /usr/local/bin/sdl2-config --static-libs)

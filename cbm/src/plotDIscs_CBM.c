@@ -3,7 +3,6 @@
 speedTableElem_t *slopetable;
 
 void initDiscPlotter(size_t len, size_t seqlen, size_t max){
-    int i;
     slopetable = generateSpeedtable(len, seqlen, max);
 
     //scale sintable to appropriate radius
@@ -34,14 +33,14 @@ void plotDiscs(Resources_t *res, drawingObjTargetRect_t *renderRect){
     static uint8_t i, ix2;
     int sinx,
         siny,
-        offsetx = (SCREEN_WIDTH  + renderRect->w) / 2,
-        offsety = (SCREEN_HEIGHT + renderRect->h) / 2;
+        offsetx = renderRect->x + renderRect->w / 2,
+        offsety = renderRect->y + renderRect->h / 2;
         //sinpos_current, slopepos_current;
 
     VIC.spr_hi_x = 0;
 
     waitretrace();
-    for (resetSinIndex(), ix2=0; getSinIndex()<DOTS; incSinIndex(),ix2+=2){
+    for (resetSinIndex(), ix2=i=0; getSinIndex()<DOTS; incSinIndex(),ix2+=2,++i){
         //sinpos_current = getCurrentSinpos(i);
         //slopepos_current = getCurrentSlopepos(i);
 
@@ -50,7 +49,7 @@ void plotDiscs(Resources_t *res, drawingObjTargetRect_t *renderRect){
         //sinx/=2;
         //siny/=2;
 
-        __AX__ = renderRect->x = sinx; //(SCREEN_WIDTH/2)+sintable[sinpos[i]]-renderRect->w/2;
+        __AX__ = sinx; //(SCREEN_WIDTH/2)+sintable[sinpos[i]]-renderRect->w/2;
         asm("ldx %v", ix2);
         asm("sta %w,x", 0xd000);
         __AX__ = siny;//(SCREEN_HEIGHT/2)+sintable[sinpos[i]+64]-renderRect->h/2;
@@ -63,7 +62,7 @@ void plotDiscs(Resources_t *res, drawingObjTargetRect_t *renderRect){
         //sinpos[i] = (sinpos_current+slopetable[slopepos_current])%256;
         //slopepos[i] = (slopepos_current+1)%256;
 
-        if ((renderRect->x>>8) > 0) VIC.spr_hi_x |= powerof2table[i];
+        if ((sinx>>8) > 0) VIC.spr_hi_x |= powerof2table[i];
         //SDL_RenderCopy(renderer, texture, 0, &renderRect);
     }
 }

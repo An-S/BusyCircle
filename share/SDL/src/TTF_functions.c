@@ -61,7 +61,7 @@ SDL_Texture *SDL_renderDisc(SDL_Renderer *renderer, TTF_Font *font, uint32_t col
 //    }
 
     //render unicode symbol representing a circular disc to SDL_Surface
-    SDL_Surface *surf = TTF_RenderUNICODE_Solid(font, L"\x25cf", SDL_translateColor(color));
+    SDL_Surface *surf = TTF_RenderUNICODE_Solid(font, (uint16_t*)L"\x25cf", SDL_translateColor(color));
     if (!surf){
         printSDL_Error("Text rendering failed in %s", funcname);
         setErrorAndExit(OTHER_ERR);

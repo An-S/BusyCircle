@@ -2,23 +2,24 @@
 
 int mainProg(void){
     SDL_Rect renderRect;
-    SDL_Renderer *renderer;
-    SDL_Texture *texture;
+    Resources_t *res;
+    //SDL_Renderer *renderer;
+    //SDL_Texture *texture;
 
-    initResources();
-    renderer = getRenderer();
-    texture = getTexture();
+    res = initResources();
+    //renderer = getRenderer();
+    //texture = getTexture();
 
-    SDL_QueryTexture(texture, 0, 0, &(renderRect.w), &(renderRect.h));
+    SDL_QueryTexture(res->tex, 0, 0, &(renderRect.w), &(renderRect.h));
 
     while(!SDL_checkQuitEvent()) {
 
-        SDL_RenderClear(renderer);
-        plotDiscs(renderer, texture, &renderRect);
-        SDL_RenderPresent(renderer);
+        SDL_RenderClear(res->rend);
+        plotDiscs(res, &renderRect);
+        SDL_RenderPresent(res->rend);
         //SDL_Delay(1000/70);
     }
-
+	freeResources(res);
     return 0;
 }
 

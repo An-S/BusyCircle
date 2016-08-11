@@ -17,9 +17,10 @@ SDL_Texture *getTexture(void){
 }
 
 //aquires several SDL resources
-void initResources(void){
+Resources_t *initResources(void){
+	Resources_t *res = malloc(sizeof(Resources_t));
     //register exit handler
-    atexit(freeResources);
+    //atexit(freeResources);
 
     initDiscPlotter(256, 16, 4);
 
@@ -28,25 +29,26 @@ void initResources(void){
     performTTFInit();
     font = openFont();
     window = createSDLWin("Busy circle!");
-    renderer = SDL_getRenderer(window);
+    res->rend = SDL_getRenderer(window);
 
     //SDL_renderDisc(renderer, font, textColor);
-    texture = SDL_renderDisc(renderer, font, 0x00ffffff);
+    res->tex = SDL_renderDisc(res->rend, font, 0x00ffffff);
     closeFont(font);
+    return res;
 }
 
 //frees the resources again
-void freeResources(void){
+void freeResources(Resources_t *res){
     if (window){
         SDL_DestroyWindow(window);
     }
-    if (renderer){
-        SDL_DestroyRenderer(renderer);
+    if (res->rend){
+        SDL_DestroyRenderer(res->rend);
     }
-    if (texture){
-        SDL_DestroyTexture(texture);
+    if (res->tex){
+        SDL_DestroyTexture(res->tex);
     }
-
+	free(res);
     terminateDiscPlotter();
 
     SDL_Quit();

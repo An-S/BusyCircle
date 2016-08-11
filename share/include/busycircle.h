@@ -8,6 +8,11 @@
 typedef int speedTableElem_t;
 #include "sinlogic.h"
 
+typedef struct{
+	Texture_t *tex;
+	Renderer_t *rend;
+} Resources_t;
+
 speedTableElem_t *generateSpeedtable(size_t len, size_t seqlen, size_t max);
 int destroySpeedtable(speedTableElem_t *speedTable);
 
