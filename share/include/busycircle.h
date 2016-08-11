@@ -5,8 +5,8 @@
 #define DISTANCE 12
 #define SLOPEDIST 4
 
-#include "sinlogic.h"
 typedef int speedTableElem_t;
+#include "sinlogic.h"
 
 speedTableElem_t *generateSpeedtable(size_t len, size_t seqlen, size_t max);
 int destroySpeedtable(speedTableElem_t *speedTable);

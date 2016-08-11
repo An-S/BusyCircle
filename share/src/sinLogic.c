@@ -2,7 +2,8 @@
 
 #define SINMAX 200
 
-enum getSinStates_t{GETXSIN, GETYSIN,
+enum getSinStates_t{GETXSIN, GETYSIN, NOSINSTATE};
+
 int sintable[] = {
     #include "sintable.h"
     /*,
@@ -20,6 +21,7 @@ uint8_t slopepos[DOTS] = 	{
 							};
 
 int sinpos_current, slopepos_current;
+uint8_t index;
 
 void resetSinIndex(void){
 	index = 0;
@@ -38,15 +40,28 @@ void incSinIndex(void){
 }
 
 int getCurrentSinValue(void){
-	static uint8_t state
-	sinpos_current = sinpos[index];
-	slopepos_current = slopepos[index];
-    return sintable[sinpos_current];
+	static uint8_t state;
+	int sinval;
+
+	switch(state){
+		case GETXSIN:
+			slopepos_current = slopepos[index];
+			sinval = sintable[sinpos_current = sinpos[index]];
+			break;
+		case GETYSIN:
+			sinval = sintable[sinpos_current+64];
+		default: break;
+	}
+	if (NOSINSTATE == ++state){
+		state = 0;
+	}
+
+	return sinval;
 }
 
-void updateSin(uint8_t i){
-    sinpos[index] = (sinpos_current+slopetable[slopepos_current])%256
-	slopepos[i] = (slopepos_current+1)%256;
+void updateSin(speedTableElem_t *slopetable){
+    sinpos[index] = (sinpos_current+slopetable[slopepos_current])%256;
+	slopepos[index] = (slopepos_current+1)%256;
 }
 
 void scaleSin(uint8_t max){

@@ -7,7 +7,7 @@ uint8_t getSinIndex(void);
 bool testSinIndexRange(uint8_t max);
 void incSinIndex(void);
 int getCurrentSinValue(void);
-void updateSin(uint8_t i);
+void updateSin(speedTableElem_t *slopetable);
 void scaleSin(uint8_t max);
 
 
