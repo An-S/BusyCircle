@@ -84,11 +84,21 @@ $(sharedir)/obj/%.o: $(sharedir)/src/%.c
 $(sharedir)/SDL/obj/%.o: $(sharedir)/SDL/src/%.c
 	gcc $(ccflags) -D LINUX_TARGET $(addprefix -I, $(linuxincdirs)) -o $@ $<
 
+$(sharedir)/obj/%.o: $(sharedir)/src/calcsin/%.c
+	gcc $(ccflags) -D LINUX_TARGET $(addprefix -I, $(linuxincdirs)) -o $@ $<
+
+$(sharedir)/cbmobj/%.o: $(sharedir)/src/calcsin/%.c
+	cc65 $(cc65flags) -E -tc64 -o $@.i $<
+	cl65 $(cl65flags) -o $@ $<
+
 
 #define targets and their respective dependencies on header files
+precalcsin: $(sharedir)/src/calcsin/calsin.c $(sharedir)/src/calcsin/sintable.c
+
 share: $(shareobjs) $(shareheads)
 
-cbm: $(cbmobjs)
+cbm: cbmtests
+	$(testdir)/cbm/sintable.prg
 	cl65 $(ld65flags) -o $(exebasename).prg $(cbmobjs) $(cbmlibs)
 
 cbmtests: $(cbmobjs) $(cbmheads) $(shareheads) $(cbmtestprgs)

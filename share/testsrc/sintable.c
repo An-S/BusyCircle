@@ -4,7 +4,7 @@
 
 MCLib_sintable_t *calcsin(size_t r);
 
-int main()
+int main(int argc, char *argv[])
 {
     FILE *ofile;
     char *filename = "sintable.h";

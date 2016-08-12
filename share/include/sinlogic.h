@@ -9,6 +9,6 @@ void incSinIndex(void);
 int getCurrentSinValue(void);
 void updateSin(speedTableElem_t *slopetable);
 void scaleSin(int max);
-
+void setSinOffsets(int _xoffs, int _yoffs);
 
 #endif // SINLOGIC_H_INCLUDED

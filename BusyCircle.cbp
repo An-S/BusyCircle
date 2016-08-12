@@ -166,6 +166,9 @@
 			<Option compile="1" />
 			<Option link="1" />
 		</Unit>
+		<Unit filename="share/src/calcsin.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="share/src/generateSpeedtable.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -182,6 +185,9 @@
 		</Unit>
 		<Unit filename="share/testsrc/busyCircleMain.lst" />
 		<Unit filename="share/testsrc/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="share/testsrc/sintable.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="share/testsrc/testGenerateSpeedtable.c">

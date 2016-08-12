@@ -20,8 +20,8 @@ uint8_t slopepos[DOTS] = 	{
 								4*SLOPEDIST, 5*SLOPEDIST, 6*SLOPEDIST, 7*SLOPEDIST
 							};
 
-static int sinpos_current, slopepos_current;
-static uint8_t sinindex;
+static uint8_t sinpos_current=0, slopepos_current=0;
+static uint8_t sinindex=0, xoffs=0, yoffs=0;
 
 void resetSinIndex(void){
 	sinindex = 0;
@@ -39,6 +39,17 @@ void incSinIndex(void){
 	++sinindex;
 }
 
+void setSinOffsets(int _xoffs, int _yoffs){
+	xoffs = _xoffs;
+	yoffs = _yoffs;
+}
+
+int __fastcall__ getSin(uint8_t idx){
+	asm("
+	asm("tax");
+	asm("
+}
+
 int getCurrentSinValue(void){
 	static uint8_t state = GETXSIN;
 	int sinval;
@@ -46,10 +57,10 @@ int getCurrentSinValue(void){
 	switch(state){
 		case GETXSIN:
 			slopepos_current = slopepos[sinindex];
-			sinval = sintable[sinpos_current = sinpos[sinindex]];
+			sinval = getsin(sinpos_current = sinpos[sinindex])+xoffs;
 			break;
 		case GETYSIN:
-			sinval = sintable[sinpos_current+(ELEMCNT(sintable)/8)];
+			sinval = getsin(sinpos_current+(ELEMCNT(sintable)/8))+yoffs;
 		default: break;
 	}
 	if (NOSINSTATE == ++state){
