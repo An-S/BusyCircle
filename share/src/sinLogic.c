@@ -64,7 +64,7 @@ void updateSin(speedTableElem_t *slopetable){
 	slopepos[sinindex] = (slopepos_current+1)%256;
 }
 
-void scaleSin(uint8_t max){
+void scaleSin(int max){
 	int i;
 	for (i = ELEMCNT(sintable)-1; i>0; --i){
         sintable[i] = (sintable[i]*max)/SINMAX;

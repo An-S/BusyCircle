@@ -9,6 +9,7 @@ int mainProg(void){
     printf("init res\n");
     res = initResources();
     printf("plotdiscs!");
+    putchar(147);//clears screen according to cbm control characters
     while(true){
         plotDiscs(res, &renderRect);
     }

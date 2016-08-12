@@ -56,7 +56,7 @@ linuxincdirs = $(linuxdir)/include $(sharedir)/include $(sharedir)/SDL/include \
 cc65test = ./cbm/src/tests/*.o
 
 #autorules to compile sources to objects for each target
-$(cbmdir)/obj/%.o: $(cbmdir)/src/%.c
+$(cbmdir)/obj/%.o: $(cbmdir)/src/%.c $(cbmheads) $(shareheads)
 	cc65 $(cc65flags) -E -tc64 -o $@.i $<
 	cl65 $(cl65flags) -o $@ $<
 
@@ -88,7 +88,7 @@ $(sharedir)/SDL/obj/%.o: $(sharedir)/SDL/src/%.c
 #define targets and their respective dependencies on header files
 share: $(shareobjs) $(shareheads)
 
-cbm: $(cbmobjs) $(cbmheads) $(shareheads)
+cbm: $(cbmobjs)
 	cl65 $(ld65flags) -o $(exebasename).prg $(cbmobjs) $(cbmlibs)
 
 cbmtests: $(cbmobjs) $(cbmheads) $(shareheads) $(cbmtestprgs)
@@ -114,10 +114,12 @@ editwin:
 printvars:
 	@echo "*** CBM targets: $(cbmtargets) ***"
 	@echo "*** CBM objects: $(cbmobjs) ***"
+	@echo "*** CBM heads: $(cbmheads) ***"
 	@echo "*** LINUX targets: $(linuxtargets) ***"
 	@echo "*** LINUX objects: $(linuxobjs) ***"
 	@echo "*** SHARE targets: $(sharetargets) ***"
 	@echo "*** SHARE objects: $(shareobjs) ***"
+	@echo "*** SHARE heads: $(shareheads) ***"
 	@echo "*** SDL targets: $(sdltargets) ***"
 	@echo "*** SDL objects: $(sdlobjs) ***"
 	@echo "*** CBM tests: $(cbmtests) ***"

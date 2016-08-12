@@ -29,8 +29,12 @@ void plotDiscs(Resources_t *res, drawingObjTargetRect_t *renderRect){
         offsety = SCREEN_HEIGHT/2 - renderRect->h / 2;
 
     for (resetSinIndex(); getSinIndex()<DOTS; incSinIndex()){
-        renderRect->x = offsetx+getCurrentSinValue();
-        renderRect->y = offsety+getCurrentSinValue();
+		getDrawingObjectPosition(	SCREEN_WIDTH/2+getCurrentSinValue(),
+									SCREEN_HEIGHT/2+getCurrentSinValue(), renderRect
+								);
+
+        //renderRect->x = offsetx+getCurrentSinValue();
+        //renderRect->y = offsety+getCurrentSinValue();
 
 		updateSin(slopetable);
         SDL_RenderCopy(res->rend, res->tex, 0, renderRect);
