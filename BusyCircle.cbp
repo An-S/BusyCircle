@@ -169,6 +169,12 @@
 		<Unit filename="share/src/calcsin.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="share/src/calcsin/calcsin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="share/src/calcsin/sintable.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="share/src/generateSpeedtable.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -42,7 +42,8 @@ cbmobjs = $(patsubst $(cbmdir)/src/%.s, $(cbmdir)/obj/%.o, \
 cbmtestprgs = $(patsubst $(cbmdir)/testsrc/%.c, $(testdir)/cbm/%.prg, $(cbmtests))\
 				$(patsubst $(sharedir)/testsrc/%.c, $(testdir)/cbm/%.prg, $(sharetests))
 
-linuxobjs = $(patsubst $(linuxdir)/src/%.c, $(linuxdir)/obj/%.o, $(linuxtargets))
+linuxobjs = $(patsubst $(linuxdir)/src/%.c, $(linuxdir)/obj/%.o, $(linuxtargets)) \
+			$(sharedir)/obj/calcsin.o $(sharedir)/obj/sintable.o
 shareobjs = $(patsubst $(sharedir)/src/%.c, $(sharedir)/obj/%.o, $(sharetargets))
 sharetestobjs = $(patsubst $(sharedir)/testsrc/%.c, $(sharedir)/testobj/%.o, $(sharetargets))
 sdlobjs = $(patsubst $(sharedir)/SDL/src/%.c, $(sharedir)/SDL/obj/%.o, $(sdltargets))
@@ -93,11 +94,12 @@ $(sharedir)/cbmobj/%.o: $(sharedir)/src/calcsin/%.c
 
 
 #define targets and their respective dependencies on header files
-precalcsin: $(sharedir)/src/calcsin/calsin.c $(sharedir)/src/calcsin/sintable.c
-
+.PHONY: precalcsin
+precalcsin: $(sharedir)/src/calcsin/calcsin.o $(sharedir)/src/calcsin/sintable.o
+	gcc $(ccflags) -o $(testdir)/$@.exe $(sharedir)/src/calcsin/calcsin.o $(sharedir)/src/calcsin/sintable.o
 share: $(shareobjs) $(shareheads)
 
-cbm: cbmtests
+cbm: cbmtests precalcsin
 	$(testdir)/cbm/sintable.prg
 	cl65 $(ld65flags) -o $(exebasename).prg $(cbmobjs) $(cbmlibs)
 
