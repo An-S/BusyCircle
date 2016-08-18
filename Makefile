@@ -4,12 +4,15 @@ cc65flags = -O $(addprefix -I, $(cbmincdirs))\
 cl65flags = -c -l $(basename $<).lst $(cc65flags) $(addprefix -Wa -I, $(cbmincdirs))
 ccflags := -c -O -g --std=gnu11 -fplan9-extensions $(shell /usr/local/bin/sdl2-config --cflags) \
 			-D LINUX_TARGET
-wccflags := -c -O -g --std=gnu11 -fplan9-extensions $(shell $(wsdldir)/sdl2-config --cflags) \
+wccflags = -c -O -g --std=gnu11 -mconsole -fplan9-extensions $(addprefix -I, $(wsdlincdirs)) \
 			-D WINDOWS_TARGET
+#$(shell $(wsdlcfgdir)\sdl2-config --cflags)
+
 ld65flags = -Ln $(cbmdir)/src/$(exebasename).lbl -m $(cbmdir)/src/$(exebasename).map \
 			-L $(cbmlibdir)
 ldflags := $(shell /usr/local/bin/sdl2-config --static-libs)
-wldflags := $(shell $(wsdldir)/sdl2-config --static-libs)
+wldflags = $(addprefix -L, $(wsdllibdirs) $(winlibdirs)) -mconsole -lSDL2 -lSDL2_TTF -lMCLib
+#-lSDL -lSDL2-TTF
 
 exebasename = busycircle
 
@@ -23,10 +26,10 @@ testdir = ./tests
 sdldir = /usr/include/SDL2
 sdllibdir = /usr/lib/x86_64-linux-gnu/
 wsdlcfgdir = C:\Users\MyAcer\Documents\Programmieren\DevelLibs\SDL\mingw\SDL2-2.0.4\i686-w64-mingw32\bin
-wsdldir = C:\Users\MyAcer\Documents\Programmieren\DevelLibs\SDL\mingw\SDL2-2.0.4\i686-w64-mingw32\include\SDL2
-wsdllibdir =
+wsdldir = C:\Users\MyAcer\Documents\Programmieren\DevelLibs\SDL\mingw
+wsdllibdir = C:\Users\MyAcer\Documents\Programmieren\DevelLibs\SDL\mingw
 cbmlibdir = /home/mc78/Coding_64/lib
-
+winlibdirs = ..\MyCLib
 
 #get lists of source and header files for all targets
 cbmtargets = $(wildcard $(cbmdir)/src/*.c) $(wildcard $(cbmdir)/src/*.s)
@@ -46,6 +49,7 @@ sdlheads = $(wildcard $(sharedir)/SDL/include/*.h)
 
 #set libraries to link
 cbmlibs = carlos.lib
+winlibs = ..\MyCLib\MCLib.a
 #get object file names from source file names
 cbmobjs = $(patsubst $(cbmdir)/src/%.s, $(cbmdir)/obj/%.o, \
 			$(patsubst $(cbmdir)/src/%.c, $(cbmdir)/obj/%.o, $(cbmtargets)) ) \
@@ -57,9 +61,11 @@ cbmtestprgs = $(patsubst $(cbmdir)/testsrc/%.c, $(testdir)/cbm/%.prg, $(cbmtests
 linuxobjs = $(patsubst $(linuxdir)/src/%.c, $(linuxdir)/obj/%.o, $(linuxtargets))
 linuxtestprgs = $(patsubst $(linuxdir)/testsrc/%.c, $(testdir)/linux/%, $(linuxtests))
 shareobjs = $(patsubst $(sharedir)/src/%.c, $(sharedir)/obj/%.o, $(sharetargets))
+wshareobjs = $(patsubst $(sharedir)/src/%.c, $(sharedir)/winobj/%.o, $(sharetargets))
 sharetestobjs = $(patsubst $(sharedir)/testsrc/%.c, $(sharedir)/testobj/%.o, $(sharetargets))
 sdlobjs = $(patsubst $(sharedir)/SDL/src/%.c, $(sharedir)/SDL/obj/%.o, $(sdltargets))
-winobjs = $(patsubst $(sharedir)/SDL/src/%.c, $(sharedir)/SDL/winobj/%.o, $(sdltargets))
+wsdlobjs = $(patsubst $(sharedir)/SDL/src/%.c, $(sharedir)/SDL/winobj/%.o, $(sdltargets))
+winobjs = $(patsubst $(windir)/src/%.c, $(windir)/obj/%.o, $(wintargets))
 
 shareincdirs = ../MCLib ../MyCLib
 cbmincdirs = $(cbmbasedir)/include $(cbmdir)/include $(sharedir)/include $(shareincdirs)
@@ -67,6 +73,10 @@ linuxincdirs = $(linuxdir)/include $(sharedir)/include $(sharedir)/SDL/include \
 				$(shareincdirs) $(sdldir)
 winincdirs = $(windir)/include $(sharedir)/include $(sharedir)/SDL/include \
 				$(shareincdirs)
+wsdlincdirs = $(wsdldir)\SDL2-2.0.4\i686-w64-mingw32\include\SDL2 \
+				$(wsdldir)\SDL2_ttf-2.0.14\i686-w64-mingw32\include\SDL2
+wsdllibdirs = $(wsdllibdir)\SDL2-2.0.4\i686-w64-mingw32\lib \
+				$(wsdllibdir)\SDL2_ttf-2.0.14\i686-w64-mingw32\lib
 #define directories with test code
 cc65test = ./cbm/src/tests/*.o
 
@@ -112,14 +122,21 @@ $(sharedir)/cbmobj/%.o: $(sharedir)/src/calcsin/%.c
 $(sharedir)/winobj/%.o: $(sharedir)/src/%.c
 	gcc $(wccflags)  $(addprefix -I, $(winincdirs)) -o $@ $<
 
+$(sharedir)/winobj/%.o: $(sharedir)/testsrc/%.c
+	gcc $(wccflags)  $(addprefix -I, $(winincdirs)) -o $@ $<
+
 $(sharedir)/SDL/winobj/%.o: $(sharedir)/SDL/src/%.c
 	gcc $(wccflags)  $(addprefix -I, $(winincdirs)) -o $@ $<
 
+$(testdir)/share/%.exe: $(sharedir)/winobj/%.o
+	gcc $(wldflags)  $(addprefix -I, $(winincdirs)) -o $@ $(winobjs) $<
+
 #define targets and their respective dependencies on header files
-precalcsin: $(sharedir)/src/calcsin/calsin.c $(sharedir)/src/calcsin/sintable.c
+precalcsin: $(sharedir)/winobj/sintable.o $(sharedir)/winobj/calcsin.o $(testdir)/share/sintable.exe
 
 share: $(shareobjs) $(shareheads)
-wshare: $(patsubst $(shareobjs),
+wshare: $(wshareobjs) $(shareheads)
+
 cbm: cbmtests
 	$(testdir)/cbm/sintable.prg
 	cl65 $(ld65flags) -o $(exebasename).prg $(cbmobjs) $(cbmlibs)
@@ -130,9 +147,9 @@ linux: share $(linuxobjs) $(sdlobjs) $(linuxheads) $(sdlheads)
 	echo ldflags: $(ldflags)
 	gcc -o $(exebasename)_lnx $(linuxobjs) $(shareobjs) $(sdlobjs) $(ldflags) -lSDL2_ttf
 
-win: share $(winobjs) $(sdlobjs) $(winheads) $(sdlheads)
-	echo ldflags: $(ldflags)
-	gcc -o $(exebasename)_lnx $(linuxobjs) $(shareobjs) $(sdlobjs) $(ldflags) -lSDL2_ttf
+win: wshare $(winobjs) $(wsdlobjs) $(winheads) $(sdlheads)
+	# echo ldflags: $(wldflags)
+	gcc -o $(exebasename).exe $(winobjs) $(wshareobjs) $(wsdlobjs) $(wldflags)
 
 
 .PHONY: editcbm
@@ -169,6 +186,11 @@ printvars:
 clean:
 	-rm -fr "*.o" $(linuxobjs) $(cbmobjs) $(shareobjs) $(sdlobjs) $(cbmtestprgs)
 	-rm -R *.prg
+
+.PHONY: cleanwin
+cleanwin:
+	cmd /c del $(subst /,\, $(winobjs) $(wshareobjs) $(wsdlobjs))
+
 #batch build targets
 .PHONY: all
 all:	cbm linux share

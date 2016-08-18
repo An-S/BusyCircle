@@ -44,10 +44,12 @@ void setSinOffsets(int _xoffs, int _yoffs){
 	yoffs = _yoffs;
 }
 
-int __fastcall__ getSin(uint8_t idx){
-	asm("
+int /*fastcall*/ getSin(uint8_t idx){
+	/*asm("
 	asm("tax");
 	asm("
+    */
+    return sintable[idx];
 }
 
 int getCurrentSinValue(void){
@@ -57,10 +59,10 @@ int getCurrentSinValue(void){
 	switch(state){
 		case GETXSIN:
 			slopepos_current = slopepos[sinindex];
-			sinval = getsin(sinpos_current = sinpos[sinindex])+xoffs;
+			sinval = getSin(sinpos_current = sinpos[sinindex])+xoffs;
 			break;
 		case GETYSIN:
-			sinval = getsin(sinpos_current+(ELEMCNT(sintable)/8))+yoffs;
+			sinval = getSin(sinpos_current+(ELEMCNT(sintable)/8))+yoffs;
 		default: break;
 	}
 	if (NOSINSTATE == ++state){
