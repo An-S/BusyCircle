@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         perror("could not open file");
     }
 
-    if ( 1!= sscanf(argv[2], "%u", &r){
+    if ( 1!= sscanf(argv[2], "%u", &r) ){
         perror("bad radius");
         exit(2);
     }

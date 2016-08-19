@@ -45,9 +45,11 @@ void setSinOffsets(int _xoffs, int _yoffs){
 }
 
 int /*fastcall*/ getSin(uint8_t idx){
-	/*asm("nop");
+	/*asm("
 	asm("tax");
-	asm("nop");*/
+	asm("
+    */
+    return sintable[idx];
 }
 
 int getCurrentSinValue(void){
