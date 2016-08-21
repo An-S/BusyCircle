@@ -2,6 +2,7 @@
 #define BUSYCIRCLE_CBM_H_INCLUDED
 
     #include <carloslib.h>
+    #include <cbm.h>
 
     #define SCREEN_WIDTH (320+48)
     #define SCREEN_HEIGHT (300)

@@ -9,7 +9,7 @@ wccflags = -c -O -g --std=gnu11 -mconsole -fplan9-extensions $(addprefix -I, $(w
 #$(shell $(wsdlcfgdir)\sdl2-config --cflags)
 
 ld65flags = -Ln $(cbmdir)/src/$(exebasename).lbl -m $(cbmdir)/src/$(exebasename).map \
-			-L $(cbmlibdir)
+			$(addprefix -L, $(cbmlibdirs))
 ldflags := $(shell /usr/local/bin/sdl2-config --static-libs)
 wldflags = $(addprefix -L, $(wsdllibdirs) $(winlibdirs)) -mconsole -lSDL2 -lSDL2_TTF -lMCLib
 #-lSDL -lSDL2-TTF
@@ -68,7 +68,8 @@ wsdlobjs = $(patsubst $(sharedir)/SDL/src/%.c, $(sharedir)/SDL/winobj/%.o, $(sdl
 winobjs = $(patsubst $(windir)/src/%.c, $(windir)/obj/%.o, $(wintargets))
 
 shareincdirs = ../MCLib ../MyCLib
-cbmincdirs = $(cbmbasedir)/include $(cbmdir)/include $(sharedir)/include $(shareincdirs)
+cbmincdirs = $(cbmbasedir)/include $(cbmdir)/include $(sharedir)/include $(shareincdirs) \
+			C:\Users\MyAcer\Documents\Programmieren\C64\include
 linuxincdirs = $(linuxdir)/include $(sharedir)/include $(sharedir)/SDL/include \
 				$(shareincdirs) $(sdldir)
 winincdirs = $(windir)/include $(sharedir)/include $(sharedir)/SDL/include \
@@ -137,8 +138,7 @@ precalcsin: $(sharedir)/winobj/sintable.o $(sharedir)/winobj/calcsin.o $(testdir
 share: $(shareobjs) $(shareheads)
 wshare: $(wshareobjs) $(shareheads)
 
-cbm: cbmtests
-	$(testdir)/cbm/sintable.prg
+cbm: $(cbmobjs)
 	cl65 $(ld65flags) -o $(exebasename).prg $(cbmobjs) $(cbmlibs)
 
 cbmtests: $(cbmobjs) $(cbmheads) $(shareheads) $(cbmtestprgs)

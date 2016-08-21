@@ -4,11 +4,8 @@
 
 enum getSinStates_t{GETXSIN, GETYSIN, NOSINSTATE};
 
-int sintable[] = {
-    #include "sintable.h"
-    /*,
-    #include "sintable.h"*/
-};
+
+
 
 uint8_t sinpos[DOTS] =  	{
 								0*DISTANCE,1*DISTANCE,2*DISTANCE,3*DISTANCE,
@@ -62,7 +59,7 @@ int getCurrentSinValue(void){
 			sinval = getSin(sinpos_current = sinpos[sinindex])+xoffs;
 			break;
 		case GETYSIN:
-			sinval = getSin(sinpos_current+(ELEMCNT(sintable)/8))+yoffs;
+			sinval = getSin(sinpos_current+32/*(ELEMCNT(sintable)/8)*/)+yoffs;
 		default: break;
 	}
 	if (NOSINSTATE == ++state){
@@ -79,7 +76,7 @@ void updateSin(speedTableElem_t *slopetable){
 
 void scaleSin(int max){
 	int i;
-	for (i = ELEMCNT(sintable)-1; i>0; --i){
+	for (i = 31/*ELEMCNT(sintable)-1*/; i>0; --i){
         sintable[i] = (sintable[i]*max)/SINMAX;
     }
 }
