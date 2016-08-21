@@ -119,6 +119,10 @@
 		<Unit filename="cbm/src/plotDIscs_CBM.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="cbm/src/plotDIscs_CBM.lst" />
+		<Unit filename="cbm/src/sindata.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="linux/src/busyCircleMain.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -161,9 +165,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="share/src/sinLogic.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="share/src/sindata.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="share/testsrc/sintable.c">

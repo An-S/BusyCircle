@@ -1,8 +1,13 @@
 #include "busycircleInterface.h"
 
+#define X 100
+#define Y 100
+#define W 50
+#define H 50
+
 int main(void){
-    size_t x=100, y=100, w=50, h=50;
-    drawingObjTargetRect_t rect = {x,y,w,h};
+    size_t x=X, y=Y, w=W, h=H;
+    drawingObjTargetRect_t rect = {X,Y,W,H};
     int retc;
 
     retc = getDrawingObjectPosition(x,y, &rect);

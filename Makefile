@@ -12,7 +12,6 @@ ld65flags = -Ln $(cbmdir)/src/$(exebasename).lbl -m $(cbmdir)/src/$(exebasename)
 			$(addprefix -L, $(cbmlibdirs))
 ldflags := $(shell /usr/local/bin/sdl2-config --static-libs)
 wldflags = $(addprefix -L, $(wsdllibdirs) $(winlibdirs)) -mconsole -lSDL2 -lSDL2_TTF -lMCLib
-#-lSDL -lSDL2-TTF
 
 exebasename = busycircle
 
@@ -28,8 +27,9 @@ sdllibdir = /usr/lib/x86_64-linux-gnu/
 wsdlcfgdir = C:\Users\MyAcer\Documents\Programmieren\DevelLibs\SDL\mingw\SDL2-2.0.4\i686-w64-mingw32\bin
 wsdldir = C:\Users\MyAcer\Documents\Programmieren\DevelLibs\SDL\mingw
 wsdllibdir = C:\Users\MyAcer\Documents\Programmieren\DevelLibs\SDL\mingw
-cbmlibdir = /home/mc78/Coding_64/lib
+cbmlibdirs = /home/mc78/Coding_64/lib $(USERPROFILE)\Documents\Programmieren\C64\lib
 winlibdirs = ..\MyCLib
+
 
 #get lists of source and header files for all targets
 cbmtargets = $(wildcard $(cbmdir)/src/*.c) $(wildcard $(cbmdir)/src/*.s)
@@ -50,6 +50,7 @@ sdlheads = $(wildcard $(sharedir)/SDL/include/*.h)
 #set libraries to link
 cbmlibs = carlos.lib
 winlibs = ..\MyCLib\MCLib.a
+
 #get object file names from source file names
 cbmobjs = $(patsubst $(cbmdir)/src/%.s, $(cbmdir)/obj/%.o, \
 			$(patsubst $(cbmdir)/src/%.c, $(cbmdir)/obj/%.o, $(cbmtargets)) ) \

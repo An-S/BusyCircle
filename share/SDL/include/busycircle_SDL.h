@@ -2,6 +2,7 @@
 #define BUSYCIRCLE_SDL_H_INCLUDED
 
 #include <stdheaders.h>
+#include <MCLib.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
 

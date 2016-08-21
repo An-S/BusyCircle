@@ -4,6 +4,8 @@
 #include <stdheaders.h>
 #include <cmacros.h>
 
+#define SDL_MAIN_HANDLED
+
 #ifdef WINDOWS_TARGET
     #include "busycircle_SDL.h"
 #endif // WINDOWS_TARGET
