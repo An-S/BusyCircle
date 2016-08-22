@@ -24,9 +24,4 @@ Linux and Windows implementations use the SDL2 library from https://www.libsdl.o
 Code has been tested on 
 - Windows 8.1, 64 Bit
 - [Ubuntu 16.04 LTS](http://www.ubuntu.com/download/desktop) 
-- [VICE C64 Emulator, V 2.4](http://vice-emu.sourceforge.net/)
-- 
- 
-
-
-
+- [VICE C64 Emulator, V 2.4](http://vice-emu.sourceforge.net)
