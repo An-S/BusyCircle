@@ -12,7 +12,7 @@ Linux and Windows implementations use the SDL2 library from https://www.libsdl.o
 2. c64 executable ![c64.png](https://github.com/An-S/Busycircle/blob/master/images/cbm(c64).PNG) 
 
 
-3. linux executable ![linux.png](https://github.com/An-S/Busycircle/blob/master/images/linux.PNG) 
+3. linux executable ![linux.png](https://github.com/An-S/Busycircle/blob/master/images/linux.png) 
 
  
 
