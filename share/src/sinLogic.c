@@ -45,10 +45,10 @@ int getCurrentSinValue(void){
 	switch(state){
 		case GETXSIN:
 			slopepos_current = slopepos[sinindex];
-			sinval = getSin(sinpos_current = sinpos[sinindex])+xoffs;
+			sinval = (int)getSin(sinpos_current = sinpos[sinindex])+xoffs;
 			break;
 		case GETYSIN:
-			sinval = getCos(sinpos_current)+yoffs;
+			sinval = (int)getCos(sinpos_current)+yoffs;
 		default: break;
 	}
 	/*if (NOSINSTATE == ++state){
@@ -61,8 +61,8 @@ int getCurrentSinValue(void){
 }
 
 void updateSin(speedTableElem_t *slopetable){
-    sinpos[sinindex] = (sinpos_current+slopetable[slopepos_current])%256;
-	slopepos[sinindex] = (slopepos_current+1)%256;
+    sinpos[sinindex] = (sinpos_current+slopetable[slopepos_current]);
+	slopepos[sinindex] = (slopepos_current+1);
 }
 
 

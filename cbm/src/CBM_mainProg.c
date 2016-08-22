@@ -10,6 +10,8 @@ int mainProg(void){
     res = initResources();
     printf("plotdiscs!");
     putchar(147);//clears screen according to cbm control characters
+    VIC.bordercolor = VIC.bgcolor0 = 0;
+    asm("sei");
     while(true){
         plotDiscs(res, &renderRect);
     }

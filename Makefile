@@ -59,14 +59,14 @@ cbmobjs = $(patsubst $(cbmdir)/src/%.s, $(cbmdir)/obj/%.o, \
 cbmtestprgs = $(patsubst $(cbmdir)/testsrc/%.c, $(testdir)/cbm/%.prg, $(cbmtests))\
 				$(patsubst $(sharedir)/testsrc/%.c, $(testdir)/cbm/%.prg, $(sharetests))
 
-linuxobjs = $(patsubst $(linuxdir)/src/%.c, $(linuxdir)/obj/%.o, $(linuxtargets))
+linuxobjs = $(patsubst $(linuxdir)/src/%.c, $(linuxdir)/obj/%.o, $(linuxtargets)) $(sharedir)/obj/sindata.o
 linuxtestprgs = $(patsubst $(linuxdir)/testsrc/%.c, $(testdir)/linux/%, $(linuxtests))
 shareobjs = $(patsubst $(sharedir)/src/%.c, $(sharedir)/obj/%.o, $(sharetargets))
 wshareobjs = $(patsubst $(sharedir)/src/%.c, $(sharedir)/winobj/%.o, $(sharetargets))
 sharetestobjs = $(patsubst $(sharedir)/testsrc/%.c, $(sharedir)/testobj/%.o, $(sharetargets))
 sdlobjs = $(patsubst $(sharedir)/SDL/src/%.c, $(sharedir)/SDL/obj/%.o, $(sdltargets))
 wsdlobjs = $(patsubst $(sharedir)/SDL/src/%.c, $(sharedir)/SDL/winobj/%.o, $(sdltargets))
-winobjs = $(patsubst $(windir)/src/%.c, $(windir)/obj/%.o, $(wintargets))
+winobjs = $(patsubst $(windir)/src/%.c, $(windir)/obj/%.o, $(wintargets)) $(sharedir)/winobj/sindata.o
 
 shareincdirs = ../MCLib ../MyCLib
 cbmincdirs = $(cbmbasedir)/include $(cbmdir)/include $(sharedir)/include $(shareincdirs) \
@@ -111,6 +111,9 @@ $(windir)/obj/%.o: $(windir)/src/%.c
 $(sharedir)/obj/%.o: $(sharedir)/src/%.c
 	gcc $(ccflags) -D LINUX_TARGET $(addprefix -I, $(linuxincdirs)) -o $@ $<
 
+$(sharedir)/obj/%.o: $(sharedir)/x86src/%.c
+	gcc $(ccflags) -D LINUX_TARGET $(addprefix -I, $(linuxincdirs)) -o $@ $<
+
 $(sharedir)/SDL/obj/%.o: $(sharedir)/SDL/src/%.c
 	gcc $(ccflags)  $(addprefix -I, $(linuxincdirs)) -o $@ $<
 
@@ -125,6 +128,9 @@ $(sharedir)/winobj/%.o: $(sharedir)/src/%.c
 	gcc $(wccflags)  $(addprefix -I, $(winincdirs)) -o $@ $<
 
 $(sharedir)/winobj/%.o: $(sharedir)/testsrc/%.c
+	gcc $(wccflags)  $(addprefix -I, $(winincdirs)) -o $@ $<
+
+$(sharedir)/winobj/%.o: $(sharedir)/x86src/%.c
 	gcc $(wccflags)  $(addprefix -I, $(winincdirs)) -o $@ $<
 
 $(sharedir)/SDL/winobj/%.o: $(sharedir)/SDL/src/%.c

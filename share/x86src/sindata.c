@@ -11,19 +11,12 @@ sinelem_t sintable[] = {
 };
 #endif // CBM_TARGET
 
-sinelem_t fastcall getSin(uint8_t /*pos*/){
-
-    return
-    asm("tax"),
-    asm("lda %v,x", sintable),
-    __AX__;
+sinelem_t fastcall getSin(uint8_t pos){
+    return sintable[pos];
 }
 
-sinelem_t fastcall getCos(uint8_t /*pos*/){
-    return
-    asm("tax"),
-    asm("lda %v+%b,x", sintable, ELEMCNT(sintable)/8),
-    __AX__;
+sinelem_t fastcall getCos(uint8_t pos){
+    return (sintable+ELEMCNT(sintable)/8)[pos];
 }
 
 void scaleSin(int max){

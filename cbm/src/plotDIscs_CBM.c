@@ -34,49 +34,33 @@ void plotDiscs(Resources_t *res, drawingObjTargetRect_t *renderRect){
 
     setSinOffsets(renderRect->x, renderRect->y);
 
-	waitretrace();
+	waitrasterline(250);
 	VIC.spr_hi_x = 0;
-	VIC.bordercolor = 11;
+	//VIC.bordercolor = 11;
 
     for (resetSinIndex(), ix2=0; getSinIndex()<DOTS; incSinIndex(),ix2+=2){
-        //sinpos_current = getCurrentSinpos(i);
-        //slopepos_current = getCurrentSlopepos(i);
-
-
-
-        //sinx/=2;
-        //siny/=2;
-
-        //__AX__ = sinx; //(SCREEN_WIDTH/2)+sintable[sinpos[i]]-renderRect->w/2;
         __AX__ = getCurrentSinValue();
 
         asm("cpx #1");
         asm("ror %w", 0xd010);
         asm("ldx %v", ix2);
         asm("sta %w,x", 0xd000);
-		++VIC.bordercolor;
+		//++VIC.bordercolor;
 
 			//__AX__ = siny;//(SCREEN_HEIGHT/2)+sintable[sinpos[i]+64]-renderRect->h/2;
         __AX__ = getCurrentSinValue();
 
         asm("ldx %v", ix2);
         asm("sta %w,x", 0xd001);
-		++VIC.bordercolor;
-
-
-        //updateSin(slopetable);
 		//++VIC.bordercolor;
 
-        //updateSlopepos();
-		//incSinIndex();
-        //sinpos[i] = (sinpos_current+slopetable[slopepos_current])%256;
-        //slopepos[i] = (slopepos_current+1)%256;
-//		VIC.spr_hi_x <<=1;
-//
-//        if ((sinx>>8) > 0) ++VIC.spr_hi_x;
-        //SDL_RenderCopy(renderer, texture, 0, &renderRect);
+
+        updateSin(slopetable);
+		//++VIC.bordercolor;
+
+
     }
-    VIC.bordercolor = 11;
+    //VIC.bordercolor = 11;
 }
 
 
