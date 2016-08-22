@@ -104,29 +104,28 @@
 			<Add directory="../../DevelLibs/SDL/mingw/SDL2_ttf-2.0.14/i686-w64-mingw32/bin" />
 		</Linker>
 		<Unit filename="Makefile" />
-		<Unit filename="busycircle/main.cpp" />
 		<Unit filename="cbm/include/busycircle_CBM.h" />
+		<Unit filename="cbm/include/cbmsin.h" />
 		<Unit filename="cbm/src/CBM_Resources.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="cbm/src/CBM_Resources.cname.lst" />
-		<Unit filename="cbm/src/CBM_Resources.lst" />
 		<Unit filename="cbm/src/CBM_getVICSpriteRect.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="cbm/src/CBM_getVICSpriteRect.lst" />
 		<Unit filename="cbm/src/CBM_mainProg.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="cbm/src/CBM_mainProg.lst" />
-		<Unit filename="cbm/src/CBM_spriteResource.lst" />
 		<Unit filename="cbm/src/CBM_spriteResource.s" />
-		<Unit filename="cbm/src/busycircle.lbl" />
-		<Unit filename="cbm/src/busycircle.map" />
 		<Unit filename="cbm/src/plotDIscs_CBM.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="cbm/src/plotDIscs_CBM.lst" />
+		<Unit filename="cbm/src/sindata.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="linux/src/busyCircleMain.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="share/SDL/include/busycircle_SDL.h" />
 		<Unit filename="share/SDL/src/SDL_Resources.c">
 			<Option compilerVar="CC" />
@@ -153,7 +152,6 @@
 		<Unit filename="share/src/busyCircleMain.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="share/src/busyCircleMain.lst" />
 		<Unit filename="share/src/calcsin/calcsin.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -163,15 +161,12 @@
 		<Unit filename="share/src/generateSpeedtable.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="share/src/generateSpeedtable.lst" />
 		<Unit filename="share/src/getDrawingPosition.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="share/src/getDrawingPosition.lst" />
 		<Unit filename="share/src/sinLogic.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="share/testsrc/busyCircleMain.lst" />
 		<Unit filename="share/testsrc/sintable.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -181,7 +176,9 @@
 		<Unit filename="share/testsrc/testGetDrawingPosition.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="share/testsrc/testGetDrawingPosition.lst" />
+		<Unit filename="win/src/BusyCircleMain_win.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
